@@ -108,15 +108,16 @@ export default {
     console.log("====================================");
     onMounted(() => {
       if (props.datatoedit) {
-        age.value = props.datatoedit.age;
-        firstname.value = props.datatoedit.firstname;
-        lastname.value = props.datatoedit.lastname;
-        gen.value = props.datatoedit.gen;
-        year.value = props.datatoedit.year;
-        major.value = props.datatoedit.major;
-        gender.value = props.datatoedit.gender;
+        age.value = props.datatoedit.age || "";
+        firstname.value = props.datatoedit.firstname || "";
+        lastname.value = props.datatoedit.lastname || "";
+        gen.value = props.datatoedit.gen || "";
+        year.value = props.datatoedit.year || "";
+        major.value = props.datatoedit.major || "";
+        gender.value = props.datatoedit.gender || ""; // Provide a default value here
       }
     });
+
     return {
       handleSubmit,
       gen,

@@ -36,6 +36,8 @@
           <input v-model="lastname" type="text" />
           <label for="">អាយុ</label>
           <input v-model="age" type="text" />
+          <label for="">ភេទ</label>
+          <input v-model="gender" type="text" />
         </div>
         <div class="flex flex-col space-y-2">
           <label for="">ជំនាន់</label>
@@ -69,6 +71,7 @@ export default {
     const gen = ref("");
     const year = ref("");
     const major = ref("");
+    const gender = ref("");
     const handleSubmit = async () => {
       const productData = {
         age: age.value,
@@ -77,6 +80,7 @@ export default {
         gen: gen.value,
         year: year.value,
         major: major.value,
+        gender: gender.value,
         createdAt: timestamp(),
       };
       if (props.datatoedit) {
@@ -110,6 +114,7 @@ export default {
         gen.value = props.datatoedit.gen;
         year.value = props.datatoedit.year;
         major.value = props.datatoedit.major;
+        gender.value = props.datatoedit.gender;
       }
     });
     return {
@@ -119,6 +124,7 @@ export default {
       major,
       firstname,
       lastname,
+      gender,
       year,
       handleClose,
     };

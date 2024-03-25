@@ -25,6 +25,7 @@
           <th>នាមត្រកូល</th>
           <th>នាម</th>
           <th>អាយុ</th>
+          <th>ភេទ</th>
           <th>ជំនាញ</th>
           <th>ឆ្នាំ</th>
           <th>ជំនាន់</th>
@@ -36,6 +37,7 @@
           <td>{{ data.firstname }}</td>
           <td>{{ data.lastname }}</td>
           <td>{{ data.age }}</td>
+          <td>{{ data.gender }}</td>
           <td>{{ data.major }}</td>
           <td>{{ data.year }}</td>
           <td>{{ data.gen }}</td>

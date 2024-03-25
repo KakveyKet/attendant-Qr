@@ -70,13 +70,14 @@ export default {
       const parts = decodeResult.split("\n");
 
       // Check if enough information is provided
-      if (parts.length === 6) {
+      if (parts.length === 7) {
         const firstName = parts[0];
         const lastName = parts[1];
         const age = parts[2];
         const major = parts[3];
         const year = parts[4];
         const gen = parts[5];
+        const gender = parts[6]; // New field: Gender
 
         // Add the scanned record to Firebase database
         const { addDocs } = useCollection("attendants");
@@ -87,6 +88,7 @@ export default {
           major: major,
           year: year,
           gen: gen,
+          gender: gender,
           createtedAt: timestamp(),
         });
 
@@ -97,6 +99,7 @@ export default {
           major: major,
           year: year,
           gen: gen,
+          gender: gender, // New field: Gender
           time: currentTime,
         });
         push.success("ស្កេនបានជោគជ័យ");

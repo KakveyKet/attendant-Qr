@@ -81,7 +81,7 @@
 
             សុំច្បាប់</router-link
           >
-          <router-link class="router_btn" to="/scan">
+          <router-link class="router_btn" to="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

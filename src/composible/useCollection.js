@@ -35,14 +35,12 @@ const useCollection = (collectionName) => {
         try {
             console.log("Updating document with ID:", id);
             console.log("Updated data:", formDoc);
-
             await updateDoc(doc(collectionRef, id), formDoc);
             console.log("Document updated successfully");
-
-            return true; // Return true to indicate success
+            return true;
         } catch (error) {
             console.error("Error updating document:", error);
-            return false; // Return false to indicate failure
+            return false;
         }
     };
     const addUser = async (userData) => {

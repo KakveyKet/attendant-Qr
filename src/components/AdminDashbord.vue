@@ -29,7 +29,7 @@
             ផ្ទាំងដើម</router-link
           >
 
-          <router-link class="router_btn" to="/">
+          <router-link class="router_btn" to="/student">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

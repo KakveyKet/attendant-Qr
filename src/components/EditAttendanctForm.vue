@@ -28,7 +28,7 @@
         </button>
       </div>
 
-      <form @submit="handleSubmit" class="grid grid-cols-2 gap-4">
+      <form @submit.prevent="handleSubmit" class="grid grid-cols-2 gap-4">
         <div class="flex flex-col space-y-2">
           <label>នាមត្រកូល</label>
           <input v-model="firstname" type="text" />
@@ -48,7 +48,9 @@
           <input v-model="major" type="text" />
         </div>
         <div class="w-full">
-          <button class="btnActtion w-[120px]">កែប្រែ</button>
+          <button class="btnActtion w-[120px]">
+            {{ datatoedit ? "កែប្រែ" : "បន្ថែម" }}
+          </button>
         </div>
       </form>
     </div>
@@ -60,8 +62,7 @@ import useCollection from "@/composible/useCollection";
 import { ref, onMounted } from "vue";
 import { timestamp } from "@/firebase/firebase";
 export default {
-  emit: ["AddSusccesfully", "UpddateSuccess"],
-
+  emit: ["AddSuccessfully", "UpdateSuccess"],
   props: ["datatoedit"],
   setup(props, { emit }) {
     const { addDocs, updateDocs } = useCollection("attendants");
@@ -72,6 +73,7 @@ export default {
     const year = ref("");
     const major = ref("");
     const gender = ref("");
+
     const handleSubmit = async () => {
       const productData = {
         age: age.value,
@@ -83,29 +85,29 @@ export default {
         gender: gender.value,
         createdAt: timestamp(),
       };
+
       if (props.datatoedit) {
-        const upadateSuccess = await updateDocs(
-          props.datatoedit?.id,
+        const updateSuccess = await updateDocs(
+          props.datatoedit.id,
           productData
         );
-        if (upadateSuccess) {
-          emit("UpddateSuccess");
+        if (updateSuccess) {
+          emit("UpdateSuccess");
         }
       } else {
         const success = await addDocs(productData);
-
         if (success) {
-          emit("AddSusccesfully");
+          emit("AddSuccessfully");
         }
       }
+
       handleClose();
     };
+
     const handleClose = () => {
       emit("close");
     };
-    console.log("====================================");
-    console.log(props.datatoedit);
-    console.log("====================================");
+
     onMounted(() => {
       if (props.datatoedit) {
         age.value = props.datatoedit.age || "";

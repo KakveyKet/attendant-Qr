@@ -23,19 +23,21 @@ export default {
       },
       qrValues: [
         {
-          name: "John Doe",
-          studentId: 1,
+          firsname: "កេត",
+          lastname: "កវី់",
+          age: 20,
+          marjor: "Information_technology",
+          year: 4,
           gen: 18,
-          age: 19,
-          level: 20,
+          gender: "Male",
         },
       ],
       currentIndex: 0,
-      qrValue: "", // Added qrValue data property
+      qrValue: "",
     };
   },
   created() {
-    this.changeQRCode(); // Call changeQRCode initially
+    this.changeQRCode();
     setInterval(this.changeQRCode, 2000); // Change QR code every 2 seconds
   },
   methods: {

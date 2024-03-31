@@ -18,33 +18,22 @@
         /><button class="btnActtion">ស្វែងរក</button>
       </div>
     </div>
-    <div class="w-full h-[600px] overflow-auto mt-8 rounded-2xl">
+    <div class="w-full h-[500px] overflow-auto mt-8 rounded-2xl">
       <table>
         <tr>
           <th>ល.រ</th>
-          <th>នាមត្រកូល</th>
-          <th>នាម</th>
-          <th>អាយុ</th>
-          <th>ភេទ</th>
-          <th>ជំនាញ</th>
-          <th>ឆ្នាំ</th>
-          <th>ជំនាន់</th>
+          <th>ឈ្មោះ</th>
+
           <th>ម៉ោងចូល</th>
           <th class="text-center">សកម្មភាព</th>
         </tr>
         <tr v-for="(data, index) in currentPageItems" :key="index">
           <td>{{ index + 1 }}</td>
-          <td>{{ data.firstname }}</td>
-          <td>{{ data.lastname }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.gender }}</td>
-          <td>{{ data.major }}</td>
-          <td>{{ data.year }}</td>
-          <td>{{ data.gen }}</td>
+          <td>{{ data.name }}</td>
           <td>
             {{
-              data && data.createtedAt
-                ? new Date(data.createtedAt.seconds * 1000).toLocaleString()
+              data && data.createdAt
+                ? new Date(data.createdAt.seconds * 1000).toLocaleString()
                 : "N/A"
             }}
           </td>
@@ -185,7 +174,6 @@ export default {
     // Define getData function
     const getData = async () => {
       try {
-        // Fetch data and update dataitem value
         await getCollectionQuery(
           "attendants",
           [],
@@ -266,11 +254,8 @@ export default {
     const filteredItems = computed(() => {
       const query = searchQuery.value.toLowerCase();
       return dataitem.value.filter((item) => {
-        if ((item && item.firstname) || item.lastname) {
-          return (
-            item.firstname.toLowerCase().includes(query) ||
-            item.lastname.toLowerCase().includes(query)
-          );
+        if (item && item.name) {
+          return item.name.toLowerCase().includes(query);
         }
         return false;
       });

@@ -6,7 +6,7 @@
 @import "notivue/animations.css";
 @layer base {
   .router_btn {
-    @apply flex items-center gap-2 text-heading4 bg-primary1 rounded-full w-[220px] justify-center py-4 font-semibold hover:bg-primary1/85 duration-300 active:bg-primary2 text-white rounded-r-none shadow-md hover:shadow-lg;
+    @apply flex items-center gap-2 text-heading4 bg-primary1 rounded-full w-[200px] justify-center py-4 font-semibold hover:bg-primary1/85 duration-300 active:bg-primary2 text-white rounded-r-none shadow-md hover:shadow-lg;
   }
   .btnActtion {
     @apply text-heading4 font-semibold px-[24px] py-[12px] bg-primary1 rounded-2xl hover:bg-primary2 duration-300 active:bg-primary1/90 text-white;
@@ -15,6 +15,9 @@
     @apply px-[12px] py-[4px] bg-none border-2 border-primary1 rounded-2xl active:bg-primary1 hover:bg-primary2 duration-300 text-primary1 hover:text-white active:text-white;
   }
   input {
+    @apply w-[400px] px-[24px] border-primary1 border-2 rounded-2xl py-[12px] bg-transparent outline-none placeholder:text-heading4 text-primary2 placeholder:font-semibold;
+  }
+  select {
     @apply w-[400px] px-[24px] border-primary1 border-2 rounded-2xl py-[12px] bg-transparent outline-none placeholder:text-heading4 text-primary2 placeholder:font-semibold;
   }
 }

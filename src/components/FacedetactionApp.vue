@@ -27,7 +27,6 @@
     <Notification :item="item" />
   </Notivue>
 </template>
-
 <script>
 import { push, Notivue, Notification } from "notivue";
 import { Html5Qrcode } from "html5-qrcode";
@@ -60,60 +59,59 @@ export default {
       );
     },
     onScanSuccess(decodeResult) {
-      const now = new Date();
-      const hours = now.getHours();
-      const minutes = now.getMinutes();
-      const ampm = hours >= 12 ? "PM" : "AM";
-      const formattedHours = this.padZero(hours);
-      const currentTime = `${formattedHours}:${this.padZero(minutes)} ${ampm}`;
-      // Split the decodeResult to extract data
-      const parts = decodeResult.split("\n");
+      try {
+        // Parse the decoded data as JSON
+        const decodedData = JSON.parse(decodeResult);
 
-      // Check if enough information is provided
-      if (parts.length === 7) {
-        const firstName = parts[0];
-        const lastName = parts[1];
-        const age = parts[2];
-        const major = parts[3];
-        const year = parts[4];
-        const gen = parts[5];
-        const gender = parts[6]; // New field: Gender
+        // Extract username and date from the decoded data
+        const username = decodedData.username;
+        const qrDate = decodedData.date;
 
-        // Add the scanned record to Firebase database
-        const { addDocs } = useCollection("attendants");
-        addDocs({
-          firstname: firstName,
-          lastname: lastName,
-          age: age,
-          major: major,
-          year: year,
-          gen: gen,
-          gender: gender,
-          createtedAt: timestamp(),
-        });
+        // Get today's date in the same format as the QR code date
+        const today = new Date();
+        const todayDate =
+          today.getDate().toString().padStart(2, "0") +
+          (today.getMonth() + 1).toString().padStart(2, "0") +
+          today.getFullYear().toString();
 
-        this.scannedRecords.push({
-          firstname: firstName,
-          lastname: lastName,
-          age: age,
-          major: major,
-          year: year,
-          gen: gen,
-          gender: gender, // New field: Gender
-          time: currentTime,
-        });
-        push.success("ស្កេនបានជោគជ័យ");
-      } else {
-        console.error("Invalid QR code data:", decodeResult);
+        // Check if the decoded date matches today's date
+        if (qrDate === todayDate) {
+          // Add the scanned record to Firebase database
+          const { addDocs } = useCollection("attendants");
+          addDocs({
+            name: username,
+            time: qrDate,
+            createdAt: timestamp(),
+          })
+            .then(() => {
+              // If the record is added successfully, you can perform further actions here
+              push.success("ស្កេនបានជោគជ័យ");
+              console.log("Scanned record added successfully:", {
+                username,
+                qrDate,
+              });
+            })
+            .catch((error) => {
+              // Handle errors if adding the record fails
+              console.error("Error adding scanned record:", error);
+            });
+
+          // Stop and restart the QR code scanning process
+          this.html5Qrcodes.stop();
+          setTimeout(() => {
+            this.html5Qrcodes.start(
+              { facingMode: "environment" },
+              this.config,
+              this.onScanSuccess
+            );
+          }, 5000);
+        } else {
+          push.error("សូមប្រើប្រាស់ Qr ដែលត្រឹមត្រូវ");
+          console.error("Invalid QR code for today's date:", decodeResult);
+        }
+      } catch (error) {
+        console.error("Error parsing QR code data:", error);
       }
-      this.html5Qrcodes.stop();
-      setTimeout(() => {
-        this.html5Qrcodes.start(
-          { facingMode: "environment" },
-          this.config,
-          this.onScanSuccess
-        );
-      }, 5000);
     },
 
     updateDate() {
@@ -144,3 +142,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.message {
+  margin-top: 10px;
+}
+</style>

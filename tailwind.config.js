@@ -25,12 +25,12 @@ export default {
         primary4: '#EEEEEE'
       },
       fontSize: {
-        'heading1': '35px',
-        'heading2': '30px',
-        'heading3': '25px',
-        'heading4': '20px',
-        'body': '18px',
-        'link': '18px'
+        'heading1': '32px',
+        'heading2': '27px',
+        'heading3': '22px',
+        'heading4': '17px',
+        'body': '16px',
+        'link': '16px'
       }
       , fontFamily: {
 

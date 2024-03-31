@@ -63,7 +63,7 @@
             </svg>
             វត្តមាន</router-link
           >
-          <router-link class="router_btn" to="/">
+          <router-link class="router_btn" to="/permissions">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

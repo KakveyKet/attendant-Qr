@@ -2,7 +2,9 @@
   <div class="w-full">
     <NavbarComponentVue />
     <div class="w-full flex">
-      <div class="w-[15%] h-screen bg-primary4 relative">
+      <div
+        class="w-[15%] h-screen bg-primary4 relative xl:block lg:block md:block hidden"
+      >
         <div
           class="flex flex-col items-end justify-center h-[700px] w-[100%] gap-4"
         >

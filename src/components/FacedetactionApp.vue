@@ -1,12 +1,16 @@
 <template>
   <div class="w-full h-[900px] mt-20 overflow-auto fixed">
     <div class="w-full h-auto">
-      <h2 class="text-heading1 text-primary1 font-semibold p-2 ml-4">
+      <h2
+        class="text-heading1 text-primary1 font-semibold p-2 lg:ml-10 xl:ml-10 md:ml-0 ml-0"
+      >
         កត់់វត្តមាន
       </h2>
     </div>
 
-    <div class="w-[760px] p-5 ml-12">
+    <div
+      class="lg:w-[760px] xl:w-[760px] md:w-full w-full p-5 lg:ml-10 xl:ml-10 md:ml-0 ml-0"
+    >
       <div class="w-full h-auto py-3 overflow-auto bg-primary3 rounded-2xl">
         <h3 class="text-lg text-indigo-700 font-semibold text-center">
           ថ្ងៃខែ: {{ currentDate }} - Time {{ currentTime }}
@@ -16,10 +20,10 @@
         </h1>
       </div>
     </div>
-    <div class="w-[750px] h-auto ml-10">
+    <div class="w-[500px] md:w-full h-auto lg:ml-10 xl:ml-10 md:ml-0 ml-0">
       <div class="rounded-lg ml-10" id="qr-code-full-region"></div>
     </div>
-    <div class="w-[760px] ml-12 p-5">
+    <div class="xl:w-[750px] lg:w-[750px] md:w-full w-full h-auto ml-10 mt-4">
       <button class="btnActtion" @click="reloadPage">ចុចបើក Camera</button>
     </div>
   </div>
@@ -44,7 +48,7 @@ export default {
     const currentDate = ref("");
     const currentTime = ref("");
     const qrCodeScanned = ref(false);
-    const html5Qrcodes = ref(null);
+    const html5QrCodeRef = ref(null);
 
     const config = {
       fps: 20,
@@ -76,8 +80,8 @@ export default {
     };
 
     const createscandqrcodes = () => {
-      html5Qrcodes.value = new Html5Qrcode("qr-code-full-region");
-      html5Qrcodes.value.start(
+      html5QrCodeRef.value = new Html5Qrcode("qr-code-full-region");
+      html5QrCodeRef.value.start(
         { facingMode: "environment" },
         config,
         onScanSuccess
@@ -85,8 +89,10 @@ export default {
     };
     const stopCameraAfterDelay = () => {
       setTimeout(() => {
-        html5Qrcodes.value.stop();
-      }, 3000);
+        if (html5QrCodeRef.value && html5QrCodeRef.value.isScanning) {
+          html5QrCodeRef.value.stop();
+        }
+      }, 1000);
     };
 
     let invalidScanCount = 0;
@@ -112,7 +118,7 @@ export default {
             addDocs({
               name: username,
               time: qrDate,
-              code: code, // Add the code field to the database
+              code: code,
               createdAt: timestamp(),
             })
               .then(() => {

@@ -129,7 +129,7 @@ import { useRouter } from "vue-router";
 import { ref } from "vue";
 export default {
   setup() {
-    const isSigOut = ref(false);
+    const isSigOut = ref(true);
     const { user } = getUser();
     const router = useRouter();
     const handleToggleSigout = () => {

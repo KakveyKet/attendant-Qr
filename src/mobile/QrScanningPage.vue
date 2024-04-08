@@ -1,23 +1,29 @@
 <template>
-  <div class="w-full h-full felx flex-col items-center justify-center">
+  <div class="w-full h-full flex flex-col items-center justify-center">
     <div
-      class="w-[90%] h-[700px] flex flex-col items-center justify-center mx-auto"
+      v-if="showRealQR"
+      class="w-[90%] h-[700px] flex flex-col items-center justify-center mx-auto border-primary1 border-2"
     >
       <qrcode-vue
         style="width: 300px; height: 300px"
-        class="border-primary1 border-4 p-2"
-        :value="
-          qrValueToString({
-            username: userDocument ? userDocument.username : '',
-            date: getCurrentDate(),
-          })
-        "
+        :value="qrValueToString(qrValues)"
         :options="qrOptions"
       />
 
-      <h2>{{ qrMessage }}</h2>
-      <span>{{ qrValues }}</span>
-      <span>{{ userDocument ? userDocument.username : "" }}</span>
+      <!-- <h2>{{ qrMessage }}</h2>
+      <span>{{ qrValueToString(qrValues) }}</span>
+      <span>{{ userDocument ? userDocument.username : "" }}</span> -->
+    </div>
+
+    <div
+      v-else
+      class="w-[90%] h-[700px] flex flex-col items-center justify-center mx-auto border-primary1 border-2"
+    >
+      <qrcode-vue
+        style="width: 300px; height: 300px"
+        :value="qrValueToString(fakeQRValue)"
+        :options="qrOptions"
+      />
     </div>
   </div>
 </template>
@@ -29,6 +35,7 @@ import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { projectFirestore } from "@/firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { sha256 } from "js-sha256";
 export default {
   components: {
     QrcodeVue,
@@ -41,17 +48,12 @@ export default {
         light: "#FFFFFF",
       },
     };
+
     const userDocument = ref(null);
-    onMounted(async () => {
-      const unsubscribe = onAuthStateChanged(getAuth(), async (user) => {
-        if (user) {
-          await fetchUserData(user.uid);
-          unsubscribe();
-        } else {
-          console.error("Current user is null.");
-        }
-      });
-    });
+    const showRealQR = ref(true); // Control whether to show real or fake QR code
+    const fakeQRValue = ref(""); // Placeholder for fake QR code value
+
+    // Fetch user data from Firestore
     const fetchUserData = async (userId) => {
       try {
         const docRef = doc(projectFirestore, "users", userId);
@@ -62,6 +64,7 @@ export default {
             email: userData.email || "",
             username: userData.username || "",
           };
+          updateQRValue();
         } else {
           console.error("User document does not exist.");
         }
@@ -69,12 +72,48 @@ export default {
         console.error("Error fetching user data:", error.message);
       }
     };
-    onMounted(() => {
-      fetchUserData();
+    const updateQRValue = () => {
+      const todayDate = getCurrentDate();
+      const username = userDocument.value ? userDocument.value.username : "";
+      qrValues.value = {
+        username: username,
+        date: todayDate,
+        code: sha256(username + "nubb" + todayDate).substring(0, 20),
+      };
+    };
+    const updateFakeQRValue = () => {
+      const todayDate = getCurrentDate();
+      const username = userDocument.value ? userDocument.value.username : "";
+      fakeQRValue.value = {
+        username: username,
+        date: todayDate,
+        code: sha256(username + "test" + todayDate).substring(0, 20),
+      };
+    };
+    const switchQRCode = () => {
+      setInterval(() => {
+        showRealQR.value = !showRealQR.value;
+      }, 1000);
+    };
+    onMounted(async () => {
+      const unsubscribe = onAuthStateChanged(getAuth(), async (user) => {
+        if (user) {
+          await fetchUserData(user.uid);
+          unsubscribe();
+          updateFakeQRValue();
+          switchQRCode();
+        } else {
+          console.error("Current user is null.");
+        }
+      });
     });
 
     const qrValues = ref("");
     const qrMessage = ref("");
+
+    const qrValueToString = (value) => {
+      return JSON.stringify(value);
+    };
 
     const getCurrentDate = () => {
       const currentDate = new Date();
@@ -84,43 +123,19 @@ export default {
       return day + month + year;
     };
 
-    const updateQRValue = () => {
-      const todayDate = getCurrentDate();
-      const username = userDocument.value ? userDocument.value.username : "";
-      qrValues.value = { username: username, date: todayDate };
-    };
-
-    const changeQRCode = () => {
-      updateQRValue();
-    };
-
-    const reloadPage = () => {
-      window.location.reload();
-    };
-    const qrValueToString = (value) => {
-      return JSON.stringify(value);
-    };
-
-    onMounted(() => {
-      updateQRValue();
-      setInterval(changeQRCode, 2000);
-    });
-
     return {
       qrOptions,
       qrValues,
       qrMessage,
-      reloadPage,
       qrValueToString,
       userDocument,
-      getCurrentDate,
+      showRealQR,
+      fakeQRValue,
     };
   },
 };
 </script>
 
 <style scoped>
-.message {
-  margin-top: 10px;
-}
+/* Add any custom styles here */
 </style>

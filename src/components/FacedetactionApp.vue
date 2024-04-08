@@ -32,113 +32,135 @@ import { push, Notivue, Notification } from "notivue";
 import { Html5Qrcode } from "html5-qrcode";
 import useCollection from "@/composible/useCollection";
 import { timestamp } from "@/firebase/firebase";
+import { ref, onMounted } from "vue";
+import { sha256 } from "js-sha256"; // Import SHA-256 hashing function
 
 export default {
   components: {
     Notivue,
     Notification,
   },
-  data() {
-    return {
-      scannedqrcode: "",
-      currentDate: "",
-      currentTime: "",
-      scannedRecords: [],
-      qrCodeScanned: false,
-      html5Qrcodes: null,
-      config: { fps: 20, qrbox: { width: 250, height: 250 } },
+  setup() {
+    const currentDate = ref("");
+    const currentTime = ref("");
+    const qrCodeScanned = ref(false);
+    const html5Qrcodes = ref(null);
+
+    const config = {
+      fps: 20,
+      qrbox: { width: 250, height: 250 },
     };
-  },
-  methods: {
-    createscandqrcodes() {
-      this.html5Qrcodes = new Html5Qrcode("qr-code-full-region");
-      this.html5Qrcodes.start(
-        { facingMode: "environment" },
-        this.config,
-        this.onScanSuccess
-      );
-    },
-    onScanSuccess(decodeResult) {
-      try {
-        // Parse the decoded data as JSON
-        const decodedData = JSON.parse(decodeResult);
 
-        // Extract username and date from the decoded data
-        const username = decodedData.username;
-        const qrDate = decodedData.date;
-
-        // Get today's date in the same format as the QR code date
-        const today = new Date();
-        const todayDate =
-          today.getDate().toString().padStart(2, "0") +
-          (today.getMonth() + 1).toString().padStart(2, "0") +
-          today.getFullYear().toString();
-
-        // Check if the decoded date matches today's date
-        if (qrDate === todayDate) {
-          // Add the scanned record to Firebase database
-          const { addDocs } = useCollection("attendants");
-          addDocs({
-            name: username,
-            time: qrDate,
-            createdAt: timestamp(),
-          })
-            .then(() => {
-              // If the record is added successfully, you can perform further actions here
-              push.success("ស្កេនបានជោគជ័យ");
-              console.log("Scanned record added successfully:", {
-                username,
-                qrDate,
-              });
-            })
-            .catch((error) => {
-              // Handle errors if adding the record fails
-              console.error("Error adding scanned record:", error);
-            });
-
-          // Stop and restart the QR code scanning process
-          this.html5Qrcodes.stop();
-          setTimeout(() => {
-            this.html5Qrcodes.start(
-              { facingMode: "environment" },
-              this.config,
-              this.onScanSuccess
-            );
-          }, 5000);
-        } else {
-          push.error("សូមប្រើប្រាស់ Qr ដែលត្រឹមត្រូវ");
-          console.error("Invalid QR code for today's date:", decodeResult);
-        }
-      } catch (error) {
-        console.error("Error parsing QR code data:", error);
-      }
-    },
-
-    updateDate() {
+    const updateDate = () => {
       const now = new Date();
       const options = { year: "numeric", month: "long", day: "numeric" };
-      this.currentDate = now.toLocaleDateString(undefined, options);
-    },
-    updateTime() {
+      currentDate.value = now.toLocaleDateString(undefined, options);
+    };
+
+    const updateTime = () => {
       const now = new Date();
       let hours = now.getHours();
       const minutes = now.getMinutes();
       const ampm = hours >= 12 ? "PM" : "AM";
       hours = hours % 12 || 12;
-      const formattedHours = this.padZero(hours);
-      this.currentTime = `${formattedHours}:${this.padZero(minutes)} ${ampm}`;
-    },
-    padZero(num) {
+      const formattedHours = padZero(hours);
+      currentTime.value = `${formattedHours}:${padZero(minutes)} ${ampm}`;
+    };
+
+    const padZero = (num) => {
       return num < 10 ? "0" + num : num;
-    },
-    reloadPage() {
+    };
+
+    const reloadPage = () => {
       window.location.reload();
-    },
-  },
-  async mounted() {
-    this.updateTime();
-    this.updateDate();
-    this.createscandqrcodes();
+    };
+
+    const createscandqrcodes = () => {
+      html5Qrcodes.value = new Html5Qrcode("qr-code-full-region");
+      html5Qrcodes.value.start(
+        { facingMode: "environment" },
+        config,
+        onScanSuccess
+      );
+    };
+    const stopCameraAfterDelay = () => {
+      setTimeout(() => {
+        html5Qrcodes.value.stop();
+      }, 3000);
+    };
+
+    let invalidScanCount = 0;
+
+    const onScanSuccess = (decodeResult) => {
+      try {
+        const decodedData = JSON.parse(decodeResult);
+        const username = decodedData.username;
+        const qrDate = decodedData.date;
+        const code = decodedData.code;
+        const today = new Date();
+        const todayDate =
+          today.getDate().toString().padStart(2, "0") +
+          (today.getMonth() + 1).toString().padStart(2, "0") +
+          today.getFullYear().toString();
+        const decryptedCode = sha256(username + "nubb" + todayDate).substring(
+          0,
+          20
+        );
+        if (code === decryptedCode) {
+          if (qrDate === todayDate) {
+            const { addDocs } = useCollection("attendants");
+            addDocs({
+              name: username,
+              time: qrDate,
+              code: code, // Add the code field to the database
+              createdAt: timestamp(),
+            })
+              .then(() => {
+                push.success("success");
+                console.log("Scanned record added successfully:", {
+                  username,
+                  qrDate,
+                  code,
+                });
+                stopCameraAfterDelay();
+              })
+              .catch((error) => {
+                console.error("Error adding scanned record:", error);
+              });
+            invalidScanCount = 0;
+          } else {
+            invalidScanCount++;
+            if (invalidScanCount >= 3) {
+              push.error("សូមប្រើប្រាស់ Qr ដែលត្រឹមត្រូវ");
+              console.error("Invalid QR code for today's date:", decodeResult);
+              invalidScanCount = 0;
+            }
+          }
+        } else {
+          invalidScanCount++;
+          if (invalidScanCount >= 3) {
+            push.error("លេខសំងាត់មិនត្រឹមត្រូវ");
+            console.error("Incorrect code scanned:", decodeResult);
+            invalidScanCount = 0;
+          }
+        }
+      } catch (error) {
+        console.error("Error parsing QR code data:", error);
+      }
+    };
+
+    onMounted(() => {
+      updateDate();
+      updateTime();
+      createscandqrcodes();
+    });
+
+    return {
+      currentDate,
+      currentTime,
+      qrCodeScanned,
+      reloadPage,
+    };
   },
 };
 </script>

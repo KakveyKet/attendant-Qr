@@ -20,10 +20,10 @@
         </h1>
       </div>
     </div>
-    <div class="w-[500px] md:w-full h-auto lg:ml-10 xl:ml-10 md:ml-0 ml-0">
+    <div class="w-[750px] h-auto ml-10 mt-4">
       <div class="rounded-lg ml-10" id="qr-code-full-region"></div>
     </div>
-    <div class="xl:w-[750px] lg:w-[750px] md:w-full w-full h-auto ml-10 mt-4">
+    <div class="w-[750px] md:w-full h-auto ml-10 mt-4">
       <button class="btnActtion" @click="reloadPage">ចុចបើក Camera</button>
     </div>
   </div>
@@ -31,6 +31,7 @@
     <Notification :item="item" />
   </Notivue>
 </template>
+
 <script>
 import { push, Notivue, Notification } from "notivue";
 import { Html5Qrcode } from "html5-qrcode";
@@ -47,7 +48,6 @@ export default {
   setup() {
     const currentDate = ref("");
     const currentTime = ref("");
-    const qrCodeScanned = ref(false);
     const html5QrCodeRef = ref(null);
 
     const config = {
@@ -87,15 +87,25 @@ export default {
         onScanSuccess
       );
     };
+
     const stopCameraAfterDelay = () => {
-      setTimeout(() => {
-        if (html5QrCodeRef.value && html5QrCodeRef.value.isScanning) {
-          html5QrCodeRef.value.stop();
-        }
-      }, 1000);
+      if (html5QrCodeRef.value && html5QrCodeRef.value.isScanning) {
+        html5QrCodeRef.value.stop();
+        setTimeout(() => {
+          if (html5QrCodeRef.value && !html5QrCodeRef.value.isScanning) {
+            html5QrCodeRef.value.start(
+              { facingMode: "environment" },
+              config,
+              onScanSuccess
+            );
+          }
+        }, 1000); // Wait for 1 second before restarting the camera
+      }
     };
 
     let invalidScanCount = 0;
+
+    const scannedRecords = {}; // Object to store scanned usernames and dates
 
     const onScanSuccess = (decodeResult) => {
       try {
@@ -103,52 +113,66 @@ export default {
         const username = decodedData.username;
         const qrDate = decodedData.date;
         const code = decodedData.code;
-        const today = new Date();
-        const todayDate =
-          today.getDate().toString().padStart(2, "0") +
-          (today.getMonth() + 1).toString().padStart(2, "0") +
-          today.getFullYear().toString();
-        const decryptedCode = sha256(username + "nubb" + todayDate).substring(
-          0,
-          20
-        );
-        if (code === decryptedCode) {
-          if (qrDate === todayDate) {
-            const { addDocs } = useCollection("attendants");
-            addDocs({
-              name: username,
-              time: qrDate,
-              code: code,
-              createdAt: timestamp(),
-            })
-              .then(() => {
-                push.success("success");
-                console.log("Scanned record added successfully:", {
-                  username,
-                  qrDate,
-                  code,
-                });
-                stopCameraAfterDelay();
+
+        const scannedKey = `${username}_${qrDate}`;
+
+        if (!scannedRecords[scannedKey]) {
+          // Check if the combination of username and date has not been scanned yet
+          const today = new Date();
+          const todayDate =
+            today.getDate().toString().padStart(2, "0") +
+            (today.getMonth() + 1).toString().padStart(2, "0") +
+            today.getFullYear().toString();
+
+          const decryptedCode = sha256(username + "nubb" + todayDate).substring(
+            0,
+            20
+          );
+
+          if (code === decryptedCode) {
+            if (qrDate === todayDate) {
+              const { addDocs } = useCollection("attendants");
+              addDocs({
+                name: username,
+                time: qrDate,
+                code: code,
+                createdAt: timestamp(),
               })
-              .catch((error) => {
-                console.error("Error adding scanned record:", error);
-              });
-            invalidScanCount = 0;
+                .then(() => {
+                  push.success("success");
+                  console.log("Scanned record added successfully:", {
+                    username,
+                    qrDate,
+                    code,
+                  });
+                  scannedRecords[scannedKey] = true; // Mark the combination as scanned
+                  stopCameraAfterDelay(); // Call stopCameraAfterDelay after successfully adding the record
+                })
+                .catch((error) => {
+                  console.error("Error adding scanned record:", error);
+                });
+              invalidScanCount = 0;
+            } else {
+              invalidScanCount++;
+              if (invalidScanCount >= 3) {
+                push.error("សូមប្រើប្រាស់ Qr ដែលត្រឹមត្រូវ");
+                console.error(
+                  "Invalid QR code for today's date:",
+                  decodeResult
+                );
+                invalidScanCount = 0;
+              }
+            }
           } else {
             invalidScanCount++;
             if (invalidScanCount >= 3) {
-              push.error("សូមប្រើប្រាស់ Qr ដែលត្រឹមត្រូវ");
-              console.error("Invalid QR code for today's date:", decodeResult);
+              push.error("លេខសំងាត់មិនត្រឹមត្រូវ");
+              console.error("Incorrect code scanned:", decodeResult);
               invalidScanCount = 0;
             }
           }
         } else {
-          invalidScanCount++;
-          if (invalidScanCount >= 3) {
-            push.error("លេខសំងាត់មិនត្រឹមត្រូវ");
-            console.error("Incorrect code scanned:", decodeResult);
-            invalidScanCount = 0;
-          }
+          console.log("Already scanned:", scannedKey);
         }
       } catch (error) {
         console.error("Error parsing QR code data:", error);
@@ -164,15 +188,8 @@ export default {
     return {
       currentDate,
       currentTime,
-      qrCodeScanned,
       reloadPage,
     };
   },
 };
 </script>
-
-<style scoped>
-.message {
-  margin-top: 10px;
-}
-</style>

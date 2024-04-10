@@ -39,7 +39,8 @@ import useCollection from "@/composible/useCollection";
 import { timestamp } from "@/firebase/firebase";
 import { ref, onMounted } from "vue";
 import { sha256 } from "js-sha256"; // Import SHA-256 hashing function
-
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { projectFirestore } from "@/firebase/firebase";
 export default {
   components: {
     Notivue,
@@ -103,11 +104,8 @@ export default {
       }
     };
 
-    let invalidScanCount = 0;
-
     const scannedRecords = {}; // Object to store scanned usernames and dates
-
-    const onScanSuccess = (decodeResult) => {
+    const onScanSuccess = async (decodeResult) => {
       try {
         const decodedData = JSON.parse(decodeResult);
         const username = decodedData.username;
@@ -131,45 +129,48 @@ export default {
 
           if (code === decryptedCode) {
             if (qrDate === todayDate) {
-              const { addDocs } = useCollection("attendants");
-              addDocs({
-                name: username,
-                time: qrDate,
-                code: code,
-                createdAt: timestamp(),
-              })
-                .then(() => {
-                  push.success("success");
-                  console.log("Scanned record added successfully:", {
-                    username,
-                    qrDate,
-                    code,
-                  });
-                  scannedRecords[scannedKey] = true; // Mark the combination as scanned
-                  stopCameraAfterDelay(); // Call stopCameraAfterDelay after successfully adding the record
+              // Query the Firestore database to check for existing record
+              const q = query(
+                collection(projectFirestore, "attendants"),
+                where("name", "==", username),
+                where("time", "==", qrDate)
+              );
+              const querySnapshot = await getDocs(q);
+
+              if (querySnapshot.empty) {
+                // If no existing record found, add the new record to the database
+                const { addDocs } = useCollection("attendants");
+                addDocs({
+                  name: username,
+                  time: qrDate,
+                  code: code,
+                  createdAt: timestamp(),
                 })
-                .catch((error) => {
-                  console.error("Error adding scanned record:", error);
-                });
-              invalidScanCount = 0;
-            } else {
-              invalidScanCount++;
-              if (invalidScanCount >= 3) {
-                push.error("សូមប្រើប្រាស់ Qr ដែលត្រឹមត្រូវ");
-                console.error(
-                  "Invalid QR code for today's date:",
-                  decodeResult
+                  .then(() => {
+                    push.success("success");
+                    console.log("Scanned record added successfully:", {
+                      username,
+                      qrDate,
+                      code,
+                    });
+                    scannedRecords[scannedKey] = true; // Mark the combination as scanned
+                    stopCameraAfterDelay(); // Call stopCameraAfterDelay after successfully adding the record
+                  })
+                  .catch((error) => {
+                    console.error("Error adding scanned record:", error);
+                  });
+              } else {
+                console.log(
+                  "Duplicate record found. Skipping addition to the database."
                 );
-                invalidScanCount = 0;
               }
+            } else {
+              // Handle invalid QR code for today's date
+              console.error("Invalid QR code for today's date:", decodeResult);
             }
           } else {
-            invalidScanCount++;
-            if (invalidScanCount >= 3) {
-              push.error("លេខសំងាត់មិនត្រឹមត្រូវ");
-              console.error("Incorrect code scanned:", decodeResult);
-              invalidScanCount = 0;
-            }
+            // Handle incorrect code scanned
+            console.error("Incorrect code scanned:", decodeResult);
           }
         } else {
           console.log("Already scanned:", scannedKey);
@@ -184,7 +185,6 @@ export default {
       updateTime();
       createscandqrcodes();
     });
-
     return {
       currentDate,
       currentTime,

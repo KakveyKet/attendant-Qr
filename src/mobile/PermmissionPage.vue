@@ -11,7 +11,7 @@
           <label class="text-xl font-semibold text-primary1">ឈ្មោះ *</label>
           <br />
           <input
-            class="w-[100%] h-[60px] rounded-lg"
+            class="w-[100%] h-[45px] rounded-lg"
             type="text"
             required
             autofocus
@@ -19,12 +19,12 @@
             v-model="name"
           />
           <input
-            class="w-[100%] h-[60px] rounded-lg hidden"
+            class="w-[100%] h-[45px] rounded-lg hidden"
             type="text"
             v-model="userDocument.email"
           />
           <input
-            class="w-[100%] h-[60px] rounded-lg hidden"
+            class="w-[100%] h-[45px] rounded-lg hidden"
             type="text"
             v-model="userDocument.username"
           />
@@ -32,7 +32,7 @@
         <div class="space-y-2">
           <label class="text-xl font-semibold text-primary1">ភេទ *</label>
           <br />
-          <select class="w-[100%] h-[60px] rounded-lg" v-model="gender">
+          <select class="w-[100%] h-[45px] rounded-lg" v-model="gender">
             <option
               required
               v-for="gen in genderChoice"
@@ -47,7 +47,7 @@
           <label class="text-xl font-semibold text-primary1">ជំនាន់ *</label>
           <br />
           <input
-            class="w-[100%] h-[60px] rounded-lg"
+            class="w-[100%] h-[45px] rounded-lg"
             type="text"
             v-model="generation"
           />
@@ -56,7 +56,7 @@
           <label class="text-xl font-semibold text-primary1">ជំនាញ *</label>
           <br />
           <input
-            class="w-[100%] h-[60px] rounded-lg"
+            class="w-[100%] h-[45px] rounded-lg"
             type="text"
             v-model="skill"
             placeholder="ជំនាញ"
@@ -67,7 +67,7 @@
         <div class="space-y-3">
           <label class="text-xl font-semibold text-primary1">ឆ្នាំទី *</label>
           <br />
-          <select class="w-[100%] h-[60px] rounded-lg" v-model="year">
+          <select class="w-[100%] h-[45px] rounded-lg" v-model="year">
             <option
               required
               v-for="yearS in yearChoice"
@@ -82,7 +82,7 @@
           <label class="text-xl font-semibold text-primary1">ជំនាន់ *</label>
           <br />
           <input
-            class="w-[100%] h-[60px] rounded-lg"
+            class="w-[100%] h-[45px] rounded-lg"
             required
             type="text"
             placeholder="ជំនាន់"
@@ -95,7 +95,7 @@
         <label class="text-xl font-semibold text-primary1">មូលហេតុ *</label>
         <br />
         <input
-          class="w-[100%] h-[60px] rounded-lg"
+          class="w-[100%] h-[45px] rounded-lg"
           required
           type="text"
           placeholder="មូលហេតុ"
@@ -108,7 +108,7 @@
         >
         <br />
         <input
-          class="w-[100%] h-[60px] rounded-lg cursor-pointer"
+          class="w-[100%] h-[45px] rounded-lg"
           required
           type="datetime-local"
           v-model="dateFrom"
@@ -120,17 +120,17 @@
         >
         <br />
         <input
-          class="w-[100%] h-[60px] rounded-lg cursor-pointer"
+          class="w-[100%] h-[45px] rounded-lg"
           required
           type="datetime-local"
           v-model="dateTo"
         />
       </div>
       <div class="flex items-center justify-start gap-4">
-        <button class="btnActtion">បញ្ចូន</button>
+        <button class="btnActtion py-[5px]">បញ្ចូន</button>
         <button
           @click="handleClear"
-          class="btnActtion bg-primary3 text-primary1 hover:text-white hover:bg-primary1"
+          class="btnActtion bg-primary3 py-[5px] text-primary1 hover:text-white hover:bg-primary1"
         >
           សរសេរម្ដងទៀត
         </button>

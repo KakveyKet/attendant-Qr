@@ -6,7 +6,7 @@
     >
       <div
         v-motion-pop
-        class="w-[70&] bg-primary4 p-5 rounded-lg shadow-sm flex flex-col space-y-4"
+        class="w-[70%] bg-primary4 p-5 rounded-lg shadow-sm flex flex-col space-y-4"
       >
         <h2 class="text-primary1 text-heading4">តើអ្នកចង់ចាកចេគមែនឬ?</h2>
         <div class="flex items-center justify-center gap-2">

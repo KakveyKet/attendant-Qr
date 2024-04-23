@@ -1,6 +1,6 @@
 <template>
   <div class="w-full bg-primary4 p-2 h-full">
-    <h2 class="text-heading3">កន្លែកដាក់ច្បាប់</h2>
+    <h1 class="text-heading3">ស្នើរប្រប្រាស់សាលកុំព្យូទ័រ</h1>
     <form
       @submit.prevent="handleSubmit"
       v-if="userDocument"
@@ -79,26 +79,31 @@
           </select>
         </div>
         <div class="space-y-3">
-          <label class="text-xl font-semibold text-primary1">ជំនាន់ *</label>
+          <label class="text-xl font-semibold text-primary1"
+            >ជ្រើរើសសាល *</label
+          >
           <br />
-          <input
-            class="w-[100%] h-[45px] rounded-lg"
-            required
-            type="text"
-            placeholder="ជំនាន់"
-            v-model="generation"
-          />
+          <select class="w-[100%] h-[45px] rounded-lg" v-model="lab">
+            <option
+              required
+              v-for="labcomputer in labs"
+              :key="labcomputer"
+              :value="labcomputer"
+            >
+              {{ labcomputer }}
+            </option>
+          </select>
         </div>
       </div>
 
       <div class="space-y-3">
-        <label class="text-xl font-semibold text-primary1">មូលហេតុ *</label>
+        <label class="text-xl font-semibold text-primary1">គោលបំណង *</label>
         <br />
         <input
           class="w-[100%] h-[45px] rounded-lg"
           required
           type="text"
-          placeholder="មូលហេតុ"
+          placeholder="គោលបំណង"
           v-model="reason"
         />
       </div>
@@ -157,7 +162,7 @@ export default {
     Notification,
   },
   setup() {
-    const { addDocs } = useCollection("permissions");
+    const { addDocs } = useCollection("labinbox");
     const name = ref("");
     const year = ref("");
     const reason = ref("");
@@ -167,7 +172,8 @@ export default {
     const gender = ref("");
     const generation = ref("");
     const yearChoice = ref(["1", "2", "3", "4", "5"]);
-
+    const labs = ref(["010", "011", "013", "014"]);
+    const lab = ref("");
     const userDocument = ref(null);
     onMounted(async () => {
       const unsubscribe = onAuthStateChanged(getAuth(), async (user) => {
@@ -210,6 +216,7 @@ export default {
           skill: skill.value,
           gender: gender.value,
           generation: generation.value,
+          lab: lab.value,
           createdAt: timestamp(),
         };
         await addDocs(productData);
@@ -228,6 +235,7 @@ export default {
       skill.value = "";
       gender.value = "";
       generation.value = "";
+      lab.value = "";
     };
     onMounted(() => {
       fetchUserData();
@@ -247,14 +255,9 @@ export default {
       handleClear,
       yearChoice,
       generation,
+      lab,
+      labs,
     };
   },
 };
 </script>
-
-<style scoped>
-.disabled {
-  pointer-events: none;
-  opacity: 0.5;
-}
-</style>

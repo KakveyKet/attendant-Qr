@@ -81,7 +81,8 @@
       class="w-full border border-primary1 mt-4 flex items-center justify-center"
     ></div>
     <div class="w-full flex flex-col mt-4">
-      <div
+      <router-link
+        to="/repairinglabservice"
         class="text-lg bg-primary3 w-full h-[180px] rounded-lg border-2 border-primary1 relative cursor-pointer active:border-blue-500 active:scale-105 duration-300"
       >
         <div
@@ -96,11 +97,24 @@
           src="../assets/image.png"
           alt=""
         />
-      </div>
+      </router-link>
     </div>
     <div class="w-full flex flex-col mt-4">
-      <div
-        class="text-lg bg-primary3 w-full h-[180px] rounded-lg border-2 border-primary1 relative cursor-pointer active:border-blue-500 active:scale-105 duration-300"
+      <router-link
+        :class="[
+          'w-full',
+          'h-[180px]',
+          'duration-300',
+          'items-center',
+          'justify-center',
+          'flex-col',
+          'flex',
+          'rounded-md',
+          'bg-primary4',
+          { disabled: !user },
+        ]"
+        :to="user ? '/labpermissions' : ''"
+        class="text-lg bg-primary3 h-[180px] rounded-lg border-2 border-primary1 relative cursor-pointer active:border-blue-500 active:scale-105 duration-300"
       >
         <div
           class="bg-primary2/30 w-full flex flex-col items-center justify-center h-full absolute backdrop-blur-[2px] top-0 right-0 rounded"
@@ -114,7 +128,7 @@
           src="../assets/image copy.png"
           alt=""
         />
-      </div>
+      </router-link>
     </div>
     <div class="w-full flex flex-col mt-4">
       <div
@@ -163,3 +177,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+</style>

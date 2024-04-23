@@ -7,6 +7,9 @@ import SigneIn from '@/mobile/SigneIn.vue';
 import LoginPage from '@/mobile/LoginPage.vue';
 import TestQr from '@/components/TestQr.vue';
 
+import ReparingLabService from '@/mobile/ReparingLabService.vue';
+
+import LabPermmission from '../mobile/LabPermmission.vue';
 const routes = [
   {
     path: '/',
@@ -17,6 +20,8 @@ const routes = [
       { path: 'menuitem', name: 'menuitem', component: MenuItemMIbile },
       { path: 'qrscanning', name: 'qrscanning', component: QrScanningPage },
       { path: 'permissions', name: 'permissions', component: PermmissionPage },
+      { path: '/labpermissions', name: 'labpermissions', component: LabPermmission },
+      { path: '/repairinglabservice', name: 'repairinglabservice', component: ReparingLabService }
     ]
   },
   { path: '/test', name: 'test', component: TestQr },

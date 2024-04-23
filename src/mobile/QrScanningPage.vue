@@ -93,7 +93,7 @@ export default {
     const switchQRCode = () => {
       setInterval(() => {
         showRealQR.value = !showRealQR.value;
-      }, 500);
+      }, 1000);
     };
     onMounted(async () => {
       const unsubscribe = onAuthStateChanged(getAuth(), async (user) => {

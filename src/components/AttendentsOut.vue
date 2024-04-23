@@ -19,7 +19,7 @@
       </div>
     </div>
     <vs-tabs class="w-full py-4">
-      <vs-tab color="#627254" label="ម៉ោងចូល">
+      <vs-tab color="#627254" label="ម៉ោងចេញ">
         <div class="con-tab-ejemplo">
           <div class="w-full h-[500px] overflow-auto mt-8 rounded-2xl">
             <table>
@@ -41,11 +41,11 @@
                 </td>
                 <td class="flex items-center justify-center gap-2">
                   <!-- <button
-              @click="handleAddEditData(data)"
-              class="w-10 h-10 text-green-600 active:text-green-700 hover:text-green-900 text-headin3 duration-300 font-semibold underline"
-            >
-              កែប្រែ
-            </button> -->
+                @click="handleAddEditData(data)"
+                class="w-10 h-10 text-green-600 active:text-green-700 hover:text-green-900 text-headin3 duration-300 font-semibold underline"
+              >
+                កែប្រែ
+              </button> -->
                   <button
                     @click="handleDelete(data.id)"
                     class="w-10 h-10 text-red-600 active:text-red-700 hover:text-red-900 text-headin3 duration-300 font-semibold underline"
@@ -180,7 +180,7 @@ export default {
     const getData = async () => {
       try {
         await getCollectionQuery(
-          "attendants",
+          "attendantsOut",
           [],
           (data) => {
             dataitem.value = data;
@@ -191,24 +191,9 @@ export default {
         console.error("Error fetching data:", error.message);
       }
     };
-    const dataitemout = ref([]);
-    const getDataOut = async () => {
-      try {
-        await getCollectionQuery(
-          "attendants",
-          [],
-          (data) => {
-            dataitemout.value = data;
-          },
-          true
-        );
-      } catch (error) {
-        console.error("Error fetching data:", error.message);
-      }
-    };
+
     onMounted(() => {
       getData();
-      getDataOut();
     });
     const productId = ref(null);
     const closeDelete = () => {
@@ -302,7 +287,6 @@ export default {
       nextPage,
       filteredItems,
       searchQuery,
-      dataitemout,
     };
   },
 };

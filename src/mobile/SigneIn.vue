@@ -2,7 +2,7 @@
   <div class="w-full bg-primary4 p-2 h-screen">
     <h2 class="text-lg">សូមស្វាគន៏</h2>
     <form
-      @submit.prevent="handleSigUp"
+      @submit.prevent="handleSignUp"
       class="w-[90%] space-y-3 mx-auto mt-4 bg-white p-2 rounded-xl"
     >
       <div>
@@ -29,7 +29,10 @@
           class="w-[100%] h-[40px] rounded-lg"
         />
       </div>
-      <button class="btnActtion w-full h-[40px] rounded-lg text-body py-1">
+      <button
+        type="submit"
+        class="btnActtion w-full h-[40px] rounded-lg text-body py-1"
+      >
         <div>បញ្ចូន</div>
       </button>
     </form>
@@ -54,23 +57,22 @@ export default {
     const router = useRouter();
 
     const { signup, error } = useSignUp();
-    const handleSigUp = async () => {
+    const handleSignUp = async () => {
       try {
         const res = await signup(email.value, password.value, username.value);
         if (res && res.user && res.user.uid) {
           await setDocs(res.user.uid, {
             username: username.value,
-            password: password.value,
             email: email.value,
-            createTedAt: timestamp,
+            createTedAt: timestamp(),
           });
-          router.push({ name: "menuitem" });
+          router.push({ name: "mobile" });
         }
       } catch (err) {
         error.value = err.message;
       }
     };
-    return { username, email, password, handleSigUp };
+    return { username, email, password, handleSignUp };
   },
 };
 </script>

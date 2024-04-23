@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@firebase/firestore": "^4.4.1",
-    "@headlessui/vue": "^1.7.17",
+    "@headlessui/vue": "^1.7.20",
     "@vueuse/motion": "^2.1.0",
     "core-js": "^3.8.3",
     "firebase": "^10.7.2",

@@ -5,6 +5,7 @@
       class="w-full h-screen bg-black/30 fixed top-0 z-[100] right-0 flex items-center justify-center"
     >
       <div
+        v-motion-pop
         class="w-[70&] bg-primary4 p-5 rounded-lg shadow-sm flex flex-col space-y-4"
       >
         <h2 class="text-primary1 text-heading4">តើអ្នកចង់ចាកចេគមែនឬ?</h2>
@@ -26,15 +27,19 @@
     </div>
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-heading4 text-primary1">
+        <h1 v-if="user" class="text-heading4 text-primary1">
           សូមស្វាគន៏មកកាន់ Repairing Lab
         </h1>
-        <h1 class="text-heading4 text-primary1">
+        <h1 v-else class="text-heading4 text-primary1">
+          សូមបង្កើត Account សម្រាប់ប្រើប្រាស់
+        </h1>
+        <h1 v-if="user" class="text-heading4 text-primary1">
           ជម្រាបសួរ 🤝 {{ user?.displayName }}
         </h1>
       </div>
       <div class="flex items-center justify-center gap-2">
         <div
+          v-if="user"
           class="w-10 h-10 bg-primary1 rounded-full flex items-center justify-center cursor-pointer"
         >
           <p class="text-heading4 text-primary4 uppercase">
@@ -43,6 +48,7 @@
         </div>
         <!-- signe out -->
         <div
+          v-if="user"
           @click="handleToggleSigout"
           class="w-10 h-10 bg-primary1/50 rounded-full flex items-center justify-center active:bg-primary1/80 cursor-pointer"
         >
@@ -59,6 +65,15 @@
             />
           </svg>
         </div>
+        <router-link
+          v-if="!user"
+          to="/login"
+          class="w-auto px-2 h-10 bg-primary1 text-white rounded-md flex items-center justify-center active:bg-primary1/80 cursor-pointer"
+        >
+          <button>
+            <h2 class="text-body">បង្កើត Account</h2>
+          </button>
+        </router-link>
       </div>
     </div>
 

@@ -1,15 +1,12 @@
-// eslint-disable-next-line vue/multi-word-component-names
 <template>
   <div class="w-full p-4 relative">
+    <!-- delete popup -->
     <div class="w-[100%%] mt-20">
-      <h1 class="text-heading1 text-primary1 ml-4">និសិត</h1>
+      <h1 class="text-heading1 text-primary1 ml-4">សុំច្បាប់</h1>
     </div>
     <div
       class="w-full p-2 mt-2 bg-primary3 rounded-2xl flex items-center justify-between"
     >
-      <div>
-        <button class="btnActtion">បន្ថែមថ្មី</button>
-      </div>
       <div class="flex gap-2">
         <input
           type="text"
@@ -22,31 +19,49 @@
       <table>
         <tr>
           <th>ល.រ</th>
-          <th>ថ្ងៃបញ្ចូល</th>
+          <th>ថ្ងៃសុំច្បាប់</th>
           <th>ឈ្មោះ</th>
-          <th>អ៊ីម៉ែល</th>
-          <th>Qr</th>
+          <th>ឆ្នាំ</th>
+          <th>ជំនាញ</th>
+          <th>ចាប់ពីថ្ងៃ</th>
+          <th>ដល់ថ្ងៃ</th>
+          <th>មូលហេតុ</th>
           <th class="text-center">សកម្មភាព</th>
         </tr>
         <tr v-for="(data, index) in currentPageItems" :key="index">
           <td>{{ index + 1 }}</td>
           <td>
             {{
-              data && data.createtedAt
-                ? new Date(data.createtedAt.seconds * 1000).toLocaleString()
+              data && data.createdAt
+                ? new Date(data.createdAt.seconds * 1000).toLocaleString()
                 : "N/A"
             }}
           </td>
-          <td>{{ data.username }}</td>
-          <td>{{ data.email }}</td>
-          <td v-if="data.image">test</td>
-          <td v-else>មិនមាន</td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.year }}</td>
+          <td>{{ data.skill }}</td>
+          <td>{{ data.dateFrom }}</td>
+          <td>{{ data.dateTo }}</td>
+          <td>{{ data.reason }}</td>
           <td class="flex items-center justify-center gap-2">
+            <button
+              @click="handlePopupDetails(data)"
+              class="w-10 h-10 text-yellow-600 active:text-yellow-700 hover:text-yellow-900 text-headin3 duration-300 font-semibold underline"
+            >
+              លំអិត
+            </button>
+
             <button
               @click="handleAddEditData(data)"
               class="w-10 h-10 text-green-600 active:text-green-700 hover:text-green-900 text-headin3 duration-300 font-semibold underline"
             >
               កែប្រែ
+            </button>
+            <button
+              @click="handleDelete(data.id)"
+              class="w-10 h-10 text-red-600 active:text-red-700 hover:text-red-900 text-headin3 duration-300 font-semibold underline"
+            >
+              លុប
             </button>
           </td>
         </tr>
@@ -96,41 +111,92 @@
         </div>
       </div>
     </div>
+    <div
+      v-if="isDeleteOpen == true"
+      class="w-full h-[100vh] bg-black/30 fixed z-[50] top-0 right-0 flex flex-col items-center justify-center"
+    >
+      <div
+        v-motion-pop
+        class="w-[300px] bg-white rounded-2xl p-4 text-heading4"
+      >
+        <div>តើអ្នកត្រូវការលុបមែនឬ?</div>
+        <div class="w-full flex items-center gap-3 mt-4">
+          <button @click="closeDelete" class="confirmBtn gap-2">បោះបង់</button>
+          <button
+            @click="deleteProduct"
+            class="confirmBtn border-red-600 hover:bg-red-400"
+          >
+            លុប
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
+  <Notivue v-slot="item">
+    <Notification :item="item" />
+  </Notivue>
   <component
     :is="currentComponent"
     @close="handleClose"
     :datatoedit="datatoedit"
+    :datatodisplay="datatodisplay"
+    @AddSusccesfully="handleSubmit"
+    @UpddateSuccess="handleUpdateSuccess"
   />
 </template>
 
 <script>
-import { ref, onMounted, computed } from "vue";
 import { getCollectionQuery } from "@/composible/getCollectection";
-import AddStudentVue from "./func/AddStudent.vue";
+import { onMounted, ref, computed } from "vue";
+import useCollection from "@/composible/useCollection";
+import { push, Notivue, Notification } from "notivue";
+import EditPermmisionVue from "./func/EditPermmision.vue";
+import PermissionDetailsVue from "./PermissionDetails.vue";
 export default {
   components: {
-    AddStudentVue,
+    Notivue,
+    Notification,
+    EditPermmisionVue,
+    PermissionDetailsVue,
   },
   setup() {
+    // Define dataitem as a ref
+    const dataitem = ref([]);
+    const { removeDoc } = useCollection("permissions");
     const currentComponent = ref("");
-
+    const datatodisplay = ref(null);
+    const handlePopupDetails = (item) => {
+      currentComponent.value = "PermissionDetailsVue";
+      datatodisplay.value = item;
+      console.log(datatodisplay.value);
+    };
     const datatoedit = ref(null);
     const handleAddEditData = (item) => {
-      currentComponent.value = "AddStudentVue";
+      currentComponent.value = "EditPermmisionVue";
       datatoedit.value = item;
       console.log("====================================");
       console.log(datatoedit.value);
       console.log("====================================");
     };
+
+    const AddSusccesfully = () => {
+      handleSuccess("Added successfully");
+    };
+
+    const handleUpdateSuccess = () => {
+      handleSuccess("Updated successfully");
+    };
+    const handleSuccess = (message) => {
+      push.success(message);
+    };
     const handleClose = () => {
       currentComponent.value = "";
     };
-    const dataitem = ref([]);
+    // Define getData function
     const getData = async () => {
       try {
         await getCollectionQuery(
-          "users",
+          "permissions",
           [],
           (data) => {
             dataitem.value = data;
@@ -144,6 +210,32 @@ export default {
     onMounted(() => {
       getData();
     });
+    const productId = ref(null);
+    const closeDelete = () => {
+      isDeleteOpen.value = !isDeleteOpen.value;
+    };
+    const isDeleteOpen = ref(false);
+    const handleDelete = (id) => {
+      productId.value = id;
+      isDeleteOpen.value = !isDeleteOpen.value;
+    };
+    const deleteProduct = async () => {
+      closeDelete();
+      try {
+        if (!productId.value) {
+          console.error("Product ID is required.");
+          return;
+        }
+        await removeDoc(productId.value);
+        push.warning("លុបបានជោគជ័យ");
+
+        console.log(productId.value);
+        productId.value = "";
+        console.log("Product deleted successfully");
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
+    };
     let sortedbyASC = ref(true);
 
     const sortList = (sortBy) => {
@@ -183,16 +275,25 @@ export default {
     const filteredItems = computed(() => {
       const query = searchQuery.value.toLowerCase();
       return dataitem.value.filter((item) => {
-        if ((item && item.username) || item.email) {
-          return (
-            item.username.toLowerCase().includes(query) ||
-            item.email.toLowerCase().includes(query)
-          );
+        if (item && item.name) {
+          return item.name.toLowerCase().includes(query);
         }
         return false;
       });
     });
     return {
+      dataitem,
+      getData,
+      deleteProduct,
+      handleDelete,
+      isDeleteOpen,
+      closeDelete,
+      handleAddEditData,
+      currentComponent,
+      handleClose,
+      datatoedit,
+      AddSusccesfully,
+      handleUpdateSuccess,
       sortList,
       currentPageItems,
       currentPage,
@@ -201,13 +302,9 @@ export default {
       nextPage,
       filteredItems,
       searchQuery,
-      handleAddEditData,
-      handleClose,
-      currentComponent,
-      datatoedit,
+      handlePopupDetails,
+      datatodisplay,
     };
   },
 };
 </script>
-
-<style lang="scss" scoped></style>

@@ -4,7 +4,7 @@
       <h2
         class="text-heading1 text-primary1 font-semibold p-2 lg:ml-10 xl:ml-10 md:ml-0 ml-0"
       >
-        កត់់វត្តមាន(ចូល)
+        កត់់វត្តមាន(ចេញ)
       </h2>
     </div>
 
@@ -23,7 +23,7 @@
     <div class="w-[750px] h-auto ml-10 mt-4">
       <div class="rounded-lg ml-10" id="qr-code-full-region"></div>
     </div>
-    <div class="w-[700px] md:w-full h-auto ml-10 mt-4">
+    <div class="w-[750px] md:w-full h-auto ml-10 mt-4">
       <button class="btnActtion" @click="toggleCamera">
         {{ cameraButtonText }}
       </button>
@@ -141,22 +141,19 @@ export default {
             console.log("Received code:", code);
 
             if (code === decryptedCode) {
-              // The QR code is valid, proceed to add data to the database
-              await addDoc(collection(projectFirestore, "attendants"), {
+              await addDoc(collection(projectFirestore, "attendantsOut"), {
                 name: username,
                 time: qrDate,
                 code: code,
                 createdAt: timestamp(),
               });
-
               console.log("Data added to database:", {
                 username,
                 qrDate,
                 code,
               });
-
               push.success("Success");
-              scannedData[scannedKey] = true; // Mark data as scanned
+              scannedData[scannedKey] = true;
             } else {
               // Invalid QR code
               console.error("Invalid QR code:", decodeResult);

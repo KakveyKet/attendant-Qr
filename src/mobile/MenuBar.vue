@@ -26,8 +26,19 @@
       </p>
     </router-link>
     <router-link
-      class="w-[80px] h-[70px] duration-300 items-center justify-center flex-col flex rounded-md bg-primary4"
-      to="/qrscanning"
+      :class="[
+        'w-[80px]',
+        'h-[70px]',
+        'duration-300',
+        'items-center',
+        'justify-center',
+        'flex-col',
+        'flex',
+        'rounded-md',
+        'bg-primary4',
+        { disabled: !user },
+      ]"
+      :to="user ? '/qrscanning' : ''"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -52,8 +63,19 @@
       <p class="font-Kantumruy text-primary1 font-semibold text-body">ស្កេន</p>
     </router-link>
     <router-link
-      class="w-[80px] h-[70px] duration-300 items-center justify-center flex-col flex rounded-md bg-primary4"
-      to="/permissions"
+      :class="[
+        'w-[80px]',
+        'h-[70px]',
+        'duration-300',
+        'items-center',
+        'justify-center',
+        'flex-col',
+        'flex',
+        'rounded-md',
+        'bg-primary4',
+        { disabled: !user },
+      ]"
+      :to="user ? '/permissions' : ''"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -78,9 +100,11 @@
 </template>
 
 <script>
+import getUser from "@/composible/getUser";
 export default {
   setup() {
-    return {};
+    const { user } = getUser();
+    return { user };
   },
 };
 </script>
@@ -98,5 +122,9 @@ export default {
 .router-link-active > svg {
   background-color: #627254;
   color: white;
+}
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }
 </style>

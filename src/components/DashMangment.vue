@@ -8,7 +8,15 @@
         <div class="flex w-[90%] h-full items-center justify-between mx-auto">
           <div class="">
             <h1 class="text-heading2 font-semibold text-white">និសិត</h1>
-            <h2 class="text-heading1 text-primary4 font-bold">14</h2>
+            <h2 class="text-heading1 text-primary4 font-bold">
+              <span
+                v-if="user.length < 10"
+                class="text-heading1 text-primary4 font-bold"
+              >
+                0
+              </span>
+              {{ attendants.length }}
+            </h2>
           </div>
           <div>
             <svg
@@ -31,8 +39,16 @@
       <div class="w-[400px] h-[200px] bg-primary2 rounded-2xl shadow-md">
         <div class="flex w-[90%] h-full items-center justify-between mx-auto">
           <div class="">
-            <h1 class="text-heading2 font-semibold text-white">វត្តមាន</h1>
-            <h2 class="text-heading1 text-primary4 font-bold">14</h2>
+            <h1 class="text-heading2 font-semibold text-white">វត្តមាន(ចូល)</h1>
+            <h2 class="text-heading1 text-primary4 font-bold">
+              <span
+                v-if="attendants.length < 10"
+                class="text-heading1 text-primary4 font-bold"
+              >
+                0
+              </span>
+              {{ attendants.length }}
+            </h2>
           </div>
           <div class="">
             <svg
@@ -56,7 +72,15 @@
         <div class="flex w-[90%] h-full items-center justify-between mx-auto">
           <div class="">
             <h1 class="text-heading2 font-semibold text-white">សុំច្បាប់</h1>
-            <h2 class="text-heading1 text-primary4 font-bold">14</h2>
+            <h2 class="text-heading1 text-primary4 font-bold">
+              <span
+                v-if="permissions.length < 10"
+                class="text-heading1 text-primary4 font-bold"
+              >
+                0
+              </span>
+              {{ permissions.length }}
+            </h2>
           </div>
           <div class="">
             <svg
@@ -79,8 +103,16 @@
       <div class="w-[400px] h-[200px] bg-primary2 rounded-2xl shadow-md">
         <div class="flex w-[90%] h-full items-center justify-between mx-auto">
           <div class="">
-            <h1 class="text-heading2 font-semibold text-white">កត់់វត្តមាន</h1>
-            <h2 class="text-heading1 text-primary4 font-bold">14</h2>
+            <h1 class="text-heading2 font-semibold text-white">វត្តមាន(ចេញ)</h1>
+            <h2 class="text-heading1 text-primary4 font-bold">
+              <span
+                v-if="attendantout.length < 10"
+                class="text-heading1 text-primary4 font-bold"
+              >
+                0
+              </span>
+              {{ attendantout.length }}
+            </h2>
           </div>
           <div class="">
             <svg
@@ -110,9 +142,77 @@
 </template>
 
 <script>
+import { getCollectionQuery } from "@/composible/getCollectection";
+import { ref, onMounted } from "vue";
 export default {
   setup() {
-    return {};
+    const attendants = ref([]);
+    const getDataattendants = async () => {
+      try {
+        await getCollectionQuery(
+          "attendants",
+          [],
+          (data) => {
+            attendants.value = data;
+          },
+          true
+        );
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+    const permissions = ref([]);
+    const getPermmissions = async () => {
+      try {
+        await getCollectionQuery(
+          "permissions",
+          [],
+          (data) => {
+            permissions.value = data;
+          },
+          true
+        );
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+    const user = ref([]);
+    const getUser = async () => {
+      try {
+        await getCollectionQuery(
+          "users",
+          [],
+          (data) => {
+            user.value = data;
+          },
+          true
+        );
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+    const attendantout = ref([]);
+    const getAttattendantout = async () => {
+      try {
+        await getCollectionQuery(
+          "attendantsOut",
+          [],
+          (data) => {
+            attendantout.value = data;
+          },
+          true
+        );
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+    onMounted(() => {
+      getDataattendants();
+      getPermmissions();
+      getUser();
+      getAttattendantout();
+    });
+    return { attendants, permissions, user, attendantout };
   },
 };
 </script>

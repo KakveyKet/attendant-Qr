@@ -6,58 +6,96 @@
       v-if="userDocument"
       class="w-[90%] space-y-3 mx-auto mt-2 bg-white p-2 rounded-xl"
     >
-      <div class="space-y-2">
-        <label class="text-xl font-semibold text-primary1">ឈ្មោះ</label>
-        <br />
-        <input
-          class="w-[100%] h-[40px] rounded-lg"
-          type="text"
-          required
-          autofocus
-          placeholder="ឈ្មោះ"
-          v-model="name"
-        />
-        <input
-          class="w-[100%] h-[40px] rounded-lg hidden"
-          type="text"
-          v-model="userDocument.email"
-        />
-        <input
-          class="w-[100%] h-[40px] rounded-lg hidden"
-          type="text"
-          v-model="userDocument.username"
-        />
-      </div>
-      <div class="space-y-2">
-        <label class="text-xl font-semibold text-primary1">ជំនាញ</label>
-        <br />
-        <select class="w-[100%] h-[40px] rounded-lg" v-model="skill">
-          <option
+      <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-2">
+          <label class="text-xl font-semibold text-primary1">ឈ្មោះ *</label>
+          <br />
+          <input
+            class="w-[100%] h-[60px] rounded-lg"
+            type="text"
             required
-            v-for="skilledu in skills"
-            :key="skilledu"
-            :value="skilledu"
-          >
-            {{ skilledu }}
-          </option>
-        </select>
+            autofocus
+            placeholder="ឈ្មោះ"
+            v-model="name"
+          />
+          <input
+            class="w-[100%] h-[60px] rounded-lg hidden"
+            type="text"
+            v-model="userDocument.email"
+          />
+          <input
+            class="w-[100%] h-[60px] rounded-lg hidden"
+            type="text"
+            v-model="userDocument.username"
+          />
+        </div>
+        <div class="space-y-2">
+          <label class="text-xl font-semibold text-primary1">ភេទ *</label>
+          <br />
+          <select class="w-[100%] h-[60px] rounded-lg" v-model="gender">
+            <option
+              required
+              v-for="gen in genderChoice"
+              :key="gen"
+              :value="gen"
+            >
+              {{ gen }}
+            </option>
+          </select>
+        </div>
+        <div class="space-y-2">
+          <label class="text-xl font-semibold text-primary1">ជំនាន់ *</label>
+          <br />
+          <input
+            class="w-[100%] h-[60px] rounded-lg"
+            type="text"
+            v-model="generation"
+          />
+        </div>
+        <div class="space-y-2">
+          <label class="text-xl font-semibold text-primary1">ជំនាញ *</label>
+          <br />
+          <input
+            class="w-[100%] h-[60px] rounded-lg"
+            type="text"
+            v-model="skill"
+            placeholder="ជំនាញ"
+          />
+        </div>
       </div>
-      <div class="space-y-3">
-        <label class="text-xl font-semibold text-primary1">ឆ្នាំទី *</label>
-        <br />
-        <input
-          class="w-[100%] h-[40px] rounded-lg"
-          required
-          type="number"
-          placeholder="ឆ្នាំទី"
-          v-model="year"
-        />
+      <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-3">
+          <label class="text-xl font-semibold text-primary1">ឆ្នាំទី *</label>
+          <br />
+          <select class="w-[100%] h-[60px] rounded-lg" v-model="year">
+            <option
+              required
+              v-for="yearS in yearChoice"
+              :key="yearS"
+              :value="yearS"
+            >
+              {{ yearS }}
+            </option>
+          </select>
+        </div>
+        <div class="space-y-3">
+          <label class="text-xl font-semibold text-primary1">ជំនាន់ *</label>
+          <br />
+          <input
+            class="w-[100%] h-[60px] rounded-lg"
+            required
+            type="text"
+            placeholder="ជំនាន់"
+            v-model="generation"
+          />
+        </div>
       </div>
+
       <div class="space-y-3">
         <label class="text-xl font-semibold text-primary1">មូលហេតុ *</label>
         <br />
         <input
-          class="w-[100%] h-[40px] rounded-lg"
+          class="w-[100%] h-[60px] rounded-lg"
           required
           type="text"
           placeholder="មូលហេតុ"
@@ -65,20 +103,24 @@
         />
       </div>
       <div class="space-y-3">
-        <label class="text-xl font-semibold text-primary1">ចាប់ពីថ្ងៃ *</label>
+        <label for="datetime" class="text-xl font-semibold text-primary1"
+          >ចាប់ពីថ្ងៃ *</label
+        >
         <br />
         <input
-          class="w-[100%] h-[40px] rounded-lg"
+          class="w-[100%] h-[60px] rounded-lg cursor-pointer"
           required
           type="datetime-local"
           v-model="dateFrom"
         />
       </div>
       <div class="space-y-3">
-        <label class="text-xl font-semibold text-primary1">ដល់ថ្ងៃ *</label>
+        <label for="datetime" class="text-xl font-semibold text-primary1"
+          >ដល់ថ្ងៃ *</label
+        >
         <br />
         <input
-          class="w-[100%] h-[40px] rounded-lg"
+          class="w-[100%] h-[60px] rounded-lg cursor-pointer"
           required
           type="datetime-local"
           v-model="dateTo"
@@ -121,6 +163,11 @@ export default {
     const reason = ref("");
     const dateFrom = ref("");
     const dateTo = ref("");
+    const genderChoice = ref(["ប្រុស", "ស្រី"]);
+    const gender = ref("");
+    const generation = ref("");
+    const yearChoice = ref(["1", "2", "3", "4", "5"]);
+
     const userDocument = ref(null);
     onMounted(async () => {
       const unsubscribe = onAuthStateChanged(getAuth(), async (user) => {
@@ -160,11 +207,14 @@ export default {
           dateTo: dateTo.value,
           email: userDocument.value.email,
           username: userDocument.value.username,
+          skill: skill.value,
+          gender: gender.value,
+          generation: generation.value,
           createdAt: timestamp(),
         };
         await addDocs(productData);
         handleClear();
-        push.success("ស្នើបានជោគជ័យ");
+        push.success("ស្នើរបានជោគជ័យ");
       } catch (error) {
         console.error("Error performing product operation:", error);
       }
@@ -176,24 +226,27 @@ export default {
       dateFrom.value = "";
       dateTo.value = "";
       skill.value = "";
+      gender.value = "";
+      generation.value = "";
     };
     onMounted(() => {
       fetchUserData();
     });
-
     const skill = ref("");
-    const skills = ref(["IT", "Civil"]);
     return {
       skill,
-      skills,
-      handleSubmit,
       name,
       year,
       reason,
       dateFrom,
       dateTo,
+      gender,
+      genderChoice,
+      handleSubmit,
       userDocument,
       handleClear,
+      yearChoice,
+      generation,
     };
   },
 };

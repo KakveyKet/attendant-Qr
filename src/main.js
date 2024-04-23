@@ -4,10 +4,10 @@ import router from './router'
 import { MotionPlugin } from '@vueuse/motion'
 import { createNotivue } from 'notivue';
 import "@/css/main.css"
-import Vuesax from 'vuesax3'
-import 'vuesax3/dist/vuesax.css'
 import 'material-icons/iconfont/material-icons.css';
-
+import vuesax3 from 'vuesax3'
+import 'vuesax3/dist/vuesax.css'
+import admin from './router/adminrouter';
 const app = createApp(App)
 const notivue = createNotivue({
     position: 'top-center',
@@ -19,10 +19,18 @@ const notivue = createNotivue({
         }
     }
 })
-app.use(Vuesax, {
+const subdomain = window.location.host.split('.')[0];
+let routes;
+if (subdomain === 'admin') {
+    routes = admin;
+} else {
+    routes = router;
+}
+
+app.use(vuesax3, {
     theme: {
         colors: {
-            primary: '#627254',
+            primary: '#5b3cc4',
             success: 'rgb(23, 201, 100)',
             danger: 'rgb(242, 19, 93)',
             warning: 'rgb(255, 130, 0)',
@@ -30,7 +38,8 @@ app.use(Vuesax, {
         }
     }
 })
-app.use(router)
+app.use(routes)
+
 app.use(MotionPlugin)
 app.use(notivue)
 app.mount('#app')

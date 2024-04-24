@@ -1,6 +1,6 @@
 <template>
   <div class="w-full bg-primary4 p-2 h-full">
-    <h1 class="text-heading3">ស្នើរប្រប្រាស់សាលកុំព្យូទ័រ</h1>
+    <h1 class="text-heading3">ស្នើរប្រើប្រាស់សាលកុំព្យូទ័រ</h1>
     <form
       @submit.prevent="handleSubmit"
       v-if="userDocument"
@@ -27,6 +27,11 @@
             class="w-[100%] h-[45px] rounded-lg hidden"
             type="text"
             v-model="userDocument.username"
+          />
+          <input
+            class="w-[100%] h-[45px] rounded-lg hidden"
+            type="text"
+            v-model="status"
           />
         </div>
         <div class="space-y-2">
@@ -174,6 +179,7 @@ export default {
     const yearChoice = ref(["1", "2", "3", "4", "5"]);
     const labs = ref(["010", "011", "013", "014"]);
     const lab = ref("");
+    const status = ref("Pending");
     const userDocument = ref(null);
     onMounted(async () => {
       const unsubscribe = onAuthStateChanged(getAuth(), async (user) => {
@@ -217,6 +223,7 @@ export default {
           gender: gender.value,
           generation: generation.value,
           lab: lab.value,
+          status: status.value,
           createdAt: timestamp(),
         };
         await addDocs(productData);
@@ -257,6 +264,7 @@ export default {
       generation,
       lab,
       labs,
+      status,
     };
   },
 };

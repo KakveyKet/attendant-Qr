@@ -12,7 +12,7 @@
         <div class="flex items-center justify-center gap-2">
           <button
             @click="handleToggleSigout"
-            class="px-6 py-2 bg-primary1 rounded-lg text-heading4"
+            class="px-6 py-2 bg-primary1 rounded-lg text-heading4 text-white"
           >
             បោះបង់
           </button>
@@ -67,7 +67,7 @@
         </div>
         <router-link
           v-if="!user"
-          to="/login"
+          to="/register"
           class="w-auto px-2 h-10 bg-primary1 text-white rounded-md flex items-center justify-center active:bg-primary1/80 cursor-pointer"
         >
           <button>
@@ -130,16 +130,14 @@
         />
       </router-link>
     </div>
-    <div class="w-full flex flex-col mt-4">
+    <a href="https://t.me/repairinglab017" class="w-full flex flex-col mt-4">
       <div
         class="text-lg bg-primary3 w-full h-[180px] rounded-lg border-2 border-primary1 relative cursor-pointer active:border-blue-500 active:scale-105 duration-300"
       >
         <div
           class="bg-primary2/30 w-full flex flex-col items-center justify-center h-full absolute backdrop-blur-[2px] top-0 right-0 rounded"
         >
-          <h1 class="text-heading2 font-semibold text-white">
-            Reparing Lab Shop
-          </h1>
+          <h1 class="text-heading2 font-semibold text-white">ព័ត៌មានបន្ថែម</h1>
         </div>
         <img
           class="w-full h-full object-cover rounded-lg"
@@ -147,7 +145,7 @@
           alt=""
         />
       </div>
-    </div>
+    </a>
   </div>
 </template>
 

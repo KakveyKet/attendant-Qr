@@ -176,11 +176,7 @@ export default {
       isReject.value = false;
     };
     const updateStatus = async (status) => {
-      const docRef = doc(
-        projectFirestore,
-        "permissions",
-        props.datatodisplay.id
-      );
+      const docRef = doc(projectFirestore, "labinbox", props.datatodisplay.id);
       handleClose();
       try {
         await updateDoc(docRef, {

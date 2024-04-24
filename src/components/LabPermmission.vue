@@ -2,7 +2,7 @@
   <div class="w-full p-4 relative">
     <!-- delete popup -->
     <div class="w-[100%%] mt-20">
-      <h1 class="text-heading1 text-primary1 ml-4">សុំច្បាប់</h1>
+      <h1 class="text-heading1 text-primary1 ml-4">ស្នើរសុំប្រើប្រាស់សាល</h1>
     </div>
     <div
       class="w-full p-2 mt-2 bg-primary3 rounded-2xl flex items-center justify-between"
@@ -166,21 +166,23 @@ import useCollection from "@/composible/useCollection";
 import { push, Notivue, Notification } from "notivue";
 import EditPermmisionVue from "./func/EditPermmision.vue";
 import PermissionDetailsVue from "./PermissionDetails.vue";
+import LabPermmissionDetail from "./LabPermmissionDetail.vue";
 export default {
   components: {
     Notivue,
     Notification,
     EditPermmisionVue,
     PermissionDetailsVue,
+    LabPermmissionDetail,
   },
   setup() {
     // Define dataitem as a ref
     const dataitem = ref([]);
-    const { removeDoc } = useCollection("permissions");
+    const { removeDoc } = useCollection("labinbox");
     const currentComponent = ref("");
     const datatodisplay = ref(null);
     const handlePopupDetails = (item) => {
-      currentComponent.value = "PermissionDetailsVue";
+      currentComponent.value = "LabPermmissionDetail";
       datatodisplay.value = item;
       console.log(datatodisplay.value);
     };
@@ -210,7 +212,7 @@ export default {
     const getData = async () => {
       try {
         await getCollectionQuery(
-          "permissions",
+          "labinbox",
           [],
           (data) => {
             dataitem.value = data;

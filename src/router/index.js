@@ -10,6 +10,9 @@ import TestQr from '@/components/TestQr.vue';
 import ReparingLabService from '@/mobile/ReparingLabService.vue';
 
 import LabPermmission from '../mobile/LabPermmission.vue';
+
+import ForgetPassword from '@/mobile/ForgetPassword.vue';
+
 const routes = [
   {
     path: '/',
@@ -27,6 +30,7 @@ const routes = [
   { path: '/test', name: 'test', component: TestQr },
   { path: '/register', name: 'register', component: SigneIn },
   { path: '/login', name: 'login', component: LoginPage },
+  { path: '/forgot', name: 'forgot', component: ForgetPassword }
 ]
 
 const router = createRouter({

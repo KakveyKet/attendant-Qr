@@ -32,20 +32,24 @@
               <tr v-for="(data, index) in currentPageItems" :key="index">
                 <td>{{ index + 1 }}</td>
                 <td>{{ data.name }}</td>
-                <td>
-                  {{
-                    data && data.createdAt
-                      ? new Date(data.createdAt.seconds * 1000).toLocaleString()
-                      : "N/A"
-                  }}
+                <td
+                  :class="{
+                    'bg-red-500 text-white': isEarly(data.createdAt),
+                    'bg-none text-black': !isEarly(data.createdAt),
+                  }"
+                >
+                  <div class="flex items-center gap-4">
+                    {{
+                      data && data.createdAt
+                        ? new Date(
+                            data.createdAt.seconds * 1000
+                          ).toLocaleString()
+                        : "N/A"
+                    }}
+                  </div>
                 </td>
+
                 <td class="flex items-center justify-center gap-2">
-                  <!-- <button
-                @click="handleAddEditData(data)"
-                class="w-10 h-10 text-green-600 active:text-green-700 hover:text-green-900 text-headin3 duration-300 font-semibold underline"
-              >
-                កែប្រែ
-              </button> -->
                   <button
                     @click="handleDelete(data.id)"
                     class="w-10 h-10 text-red-600 active:text-red-700 hover:text-red-900 text-headin3 duration-300 font-semibold underline"
@@ -266,6 +270,15 @@ export default {
         return false;
       });
     });
+    const isEarly = (createdAt) => {
+      const earlyTime = new Date();
+      earlyTime.setHours(5, 0, 0, 0);
+
+      const createdAtTime = new Date(createdAt.seconds * 1000);
+
+      return createdAtTime < earlyTime;
+    };
+
     return {
       dataitem,
       getData,
@@ -287,6 +300,7 @@ export default {
       nextPage,
       filteredItems,
       searchQuery,
+      isEarly,
     };
   },
 };

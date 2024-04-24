@@ -7,20 +7,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary1: '#627254',
-        primary2: '#76885B',
+        primary1: '#1C1678',
+        primary2: '#0E46A3',
         primary3: '#DDDDDD',
         primary4: '#EEEEEE'
       },
       backgroundColor: {
-        primary1: '#627254',
-        primary2: '#76885B',
+        primary1: '#1C1678',
+        primary2: '#0E46A3',
         primary3: '#DDDDDD',
         primary4: '#EEEEEE'
       },
       borderColor: {
-        primary1: '#627254',
-        primary2: '#76885B',
+        primary1: '#1C1678',
+        primary2: '#0E46A3',
         primary3: '#DDDDDD',
         primary4: '#EEEEEE'
       },

@@ -21,7 +21,7 @@
     <vs-tabs class="w-full py-4">
       <vs-tab color="#627254" label="ម៉ោងចូល">
         <div class="con-tab-ejemplo">
-          <div class="w-full h-[500px] overflow-auto mt-8 rounded-2xl">
+          <div class="w-full h-[500px] overflow-auto mt-8">
             <table>
               <tr>
                 <td>ល.រ</td>
@@ -32,20 +32,23 @@
               <tr v-for="(data, index) in currentPageItems" :key="index">
                 <td>{{ index + 1 }}</td>
                 <td>{{ data.name }}</td>
-                <td>
-                  {{
-                    data && data.createdAt
-                      ? new Date(data.createdAt.seconds * 1000).toLocaleString()
-                      : "N/A"
-                  }}
+                <td
+                  :class="{
+                    'bg-red-500 text-white': isLate(data && data.createdAt),
+                    'bg-none text-black': !isLate(data && data.createdAt),
+                  }"
+                >
+                  <div>
+                    {{
+                      data && data.createdAt
+                        ? new Date(
+                            data.createdAt.seconds * 1000
+                          ).toLocaleString()
+                        : "N/A"
+                    }}
+                  </div>
                 </td>
                 <td class="flex items-center justify-center gap-2">
-                  <!-- <button
-              @click="handleAddEditData(data)"
-              class="w-10 h-10 text-green-600 active:text-green-700 hover:text-green-900 text-headin3 duration-300 font-semibold underline"
-            >
-              កែប្រែ
-            </button> -->
                   <button
                     @click="handleDelete(data.id)"
                     class="w-10 h-10 text-red-600 active:text-red-700 hover:text-red-900 text-headin3 duration-300 font-semibold underline"
@@ -191,24 +194,9 @@ export default {
         console.error("Error fetching data:", error.message);
       }
     };
-    const dataitemout = ref([]);
-    const getDataOut = async () => {
-      try {
-        await getCollectionQuery(
-          "attendants",
-          [],
-          (data) => {
-            dataitemout.value = data;
-          },
-          true
-        );
-      } catch (error) {
-        console.error("Error fetching data:", error.message);
-      }
-    };
+
     onMounted(() => {
       getData();
-      getDataOut();
     });
     const productId = ref(null);
     const closeDelete = () => {
@@ -281,6 +269,24 @@ export default {
         return false;
       });
     });
+    const isLate = (createdAt) => {
+      if (!createdAt) return false; // Return false if createdAt is null or undefined
+
+      const lateTime = new Date();
+      lateTime.setHours(2, 25, 0, 0); // Set it to 2:25:00 AM
+
+      const createdAtTime = new Date(createdAt.seconds * 1000);
+      const createdAtHourMinute = new Date();
+      createdAtHourMinute.setHours(
+        createdAtTime.getHours(),
+        createdAtTime.getMinutes(),
+        0,
+        0
+      );
+
+      return createdAtHourMinute > lateTime;
+    };
+
     return {
       dataitem,
       getData,
@@ -302,7 +308,7 @@ export default {
       nextPage,
       filteredItems,
       searchQuery,
-      dataitemout,
+      isLate,
     };
   },
 };

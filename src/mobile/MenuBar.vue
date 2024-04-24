@@ -111,16 +111,16 @@ export default {
 
 <style scoped>
 .router-link-active {
-  background-color: #627254;
+  background-color: #1c1678;
   color: white;
 }
 .router-link-active > p {
-  background-color: #627254;
+  background-color: #1c1678;
   color: white;
 }
 
 .router-link-active > svg {
-  background-color: #627254;
+  background-color: #1c1678;
   color: white;
 }
 .disabled {

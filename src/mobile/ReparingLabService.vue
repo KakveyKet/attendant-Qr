@@ -20,12 +20,54 @@
     <div
       class="w-[90%] items-center bg-primary4 shadow-md mx-auto mt-4 rounded-md p-4 space-y-4"
     >
-      <h2 class="text-heading3 font-semibold text-primary1 text-start">
+      <h2 class="text-heading4 font-semibold text-primary1 text-start">
         ផ្នែកជួសជុល:
       </h2>
 
       <ul class="ml-4">
-        <li class="list-decimal">hello</li>
+        <li class="list-decimal">ជួសជុលកុំព្យូទ័រ</li>
+        <li class="list-decimal">ជួសជុលធុងកុំព្យូទ័រ(System Unit)</li>
+        <li class="list-decimal">តម្លើងម៉ាស៊ីនព្រីន</li>
+      </ul>
+    </div>
+    <div
+      class="w-[90%] items-center bg-primary4 shadow-md mx-auto mt-4 rounded-md p-4 space-y-4"
+    >
+      <h2 class="text-heading4 font-semibold text-primary1 text-start">
+        ផ្នែកម្លើងកម្មវីធី:
+      </h2>
+
+      <ul class="ml-4">
+        <li class="list-decimal">កម្មវិធី Crack</li>
+        <li class="list-decimal">កម្មវិធី​ Licence</li>
+        <li class="list-decimal">
+          កម្មវិធី​ សម្រាប់ការិយាល័យ​ Microsoft Office គ្រ​ប់ជំនាន់
+        </li>
+        <li class="list-decimal">
+          កម្មវិធី​ សម្រាប់ការងារផ្នែក​​ Civil Engineering Architecture
+          គ្រ​ប់ជំនាន់
+        </li>
+        <li class="list-decimal">
+          កម្មវិធី​ សម្រាប់ការងាររផ្នែក​​ កសិកម្ម គ្រ​ប់ជំនាន់
+        </li>
+        <li class="list-decimal">
+          កម្មវិធី​ សម្រាប់ការងារផ្នែក​ Multimedia គ្រ​ប់ជំនាន់
+        </li>
+      </ul>
+    </div>
+    <div
+      class="w-[90%] items-center bg-primary4 shadow-md mx-auto mt-4 rounded-md p-4 space-y-4"
+    >
+      <h2 class="text-heading4 font-semibold text-primary1 text-start">
+        ផ្នែកលក់គ្រឿងបម្លាស់និង ទិញLicence:
+      </h2>
+
+      <ul class="ml-4">
+        <li class="list-decimal">កម្មវិធី Crack</li>
+        <li class="list-decimal">កម្មវិធី​ Licence</li>
+        <li class="list-decimal">
+          កម្មវិធី​ សម្រាប់ការិយាល័យ​ Microsoft Office គ្រ​ប់ជំនាន់
+        </li>
       </ul>
     </div>
   </div>

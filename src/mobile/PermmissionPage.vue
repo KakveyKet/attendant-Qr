@@ -28,6 +28,11 @@
             type="text"
             v-model="userDocument.username"
           />
+          <input
+            class="w-[100%] h-[45px] rounded-lg hidden"
+            type="text"
+            v-model="status"
+          />
         </div>
         <div class="space-y-2">
           <label class="text-xl font-semibold text-primary1">ភេទ *</label>
@@ -44,15 +49,6 @@
           </select>
         </div>
         <div class="space-y-2">
-          <label class="text-xl font-semibold text-primary1">ជំនាន់ *</label>
-          <br />
-          <input
-            class="w-[100%] h-[45px] rounded-lg"
-            type="text"
-            v-model="generation"
-          />
-        </div>
-        <div class="space-y-2">
           <label class="text-xl font-semibold text-primary1">ជំនាញ *</label>
           <br />
           <input
@@ -62,8 +58,17 @@
             placeholder="ជំនាញ"
           />
         </div>
+        <div class="space-y-2">
+          <label class="text-xl font-semibold text-primary1">ជំនាន់ *</label>
+          <br />
+          <input
+            class="w-[100%] h-[45px] rounded-lg"
+            type="text"
+            v-model="generation"
+          />
+        </div>
       </div>
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 gap-4">
         <div class="space-y-3">
           <label class="text-xl font-semibold text-primary1">ឆ្នាំទី *</label>
           <br />
@@ -78,7 +83,7 @@
             </option>
           </select>
         </div>
-        <div class="space-y-3">
+        <!-- <div class="space-y-3">
           <label class="text-xl font-semibold text-primary1">ជំនាន់ *</label>
           <br />
           <input
@@ -88,7 +93,7 @@
             placeholder="ជំនាន់"
             v-model="generation"
           />
-        </div>
+        </div> -->
       </div>
 
       <div class="space-y-3">
@@ -167,7 +172,7 @@ export default {
     const gender = ref("");
     const generation = ref("");
     const yearChoice = ref(["1", "2", "3", "4", "5"]);
-
+    const status = ref("Pending");
     const userDocument = ref(null);
     onMounted(async () => {
       const unsubscribe = onAuthStateChanged(getAuth(), async (user) => {
@@ -210,6 +215,7 @@ export default {
           skill: skill.value,
           gender: gender.value,
           generation: generation.value,
+          status: status.value,
           createdAt: timestamp(),
         };
         await addDocs(productData);
@@ -247,6 +253,7 @@ export default {
       handleClear,
       yearChoice,
       generation,
+      status,
     };
   },
 };

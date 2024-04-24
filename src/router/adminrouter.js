@@ -7,6 +7,7 @@ import Student from '@/components/StudentPage.vue';
 import StudentPermissionPage from '@/components/StudentPermissionPage.vue';
 import FaceAttendentOut from '@/components/FaceAttendentOut.vue';
 import AttendentsOut from '@/components/AttendentsOut.vue';
+import LabPermmission from '../components/LabPermmission.vue';
 const adminrouters = [
     {
         path: '/',
@@ -20,7 +21,10 @@ const adminrouters = [
             { path: 'student', name: 'student', component: Student },
             { path: 'studentpermission', name: 'studentpermission', component: StudentPermissionPage },
             { path: 'scanout', name: 'scanout', component: FaceAttendentOut },
-            { path: 'attendentout', name: 'attendentout', component: AttendentsOut }
+            { path: 'attendentout', name: 'attendentout', component: AttendentsOut },
+            {
+                path: '/labpermission', name: 'labpermission', component: LabPermmission
+            }
         ]
     }
 ]

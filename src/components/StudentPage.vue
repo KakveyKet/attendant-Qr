@@ -1,15 +1,11 @@
-// eslint-disable-next-line vue/multi-word-component-names
 <template>
   <div class="w-full p-4 relative">
     <div class="w-[100%%] mt-20">
       <h1 class="text-heading1 text-primary1 ml-4">និសិត</h1>
     </div>
     <div
-      class="w-full p-2 mt-2 bg-primary3 rounded-2xl flex items-center justify-between"
+      class="w-full p-2 mt-2 bg-primary3 rounded-2xl flex items-center justify-end"
     >
-      <div>
-        <button class="btnActtion">បន្ថែមថ្មី</button>
-      </div>
       <div class="flex gap-2">
         <input
           type="text"
@@ -18,37 +14,37 @@
         /><button class="btnActtion">ស្វែងរក</button>
       </div>
     </div>
-    <div class="w-full h-[500px] overflow-auto mt-8 rounded-2xl">
+    <div class="w-full h-[500px] overflow-auto mt-8">
       <table>
         <tr>
-          <th>ល.រ</th>
-          <th>ថ្ងៃបញ្ចូល</th>
-          <th>ឈ្មោះ</th>
-          <th>អ៊ីម៉ែល</th>
-          <th>Qr</th>
-          <th class="text-center">សកម្មភាព</th>
+          <td>ល.រ</td>
+          <td>ថ្ងៃបញ្ចូល</td>
+          <td>ឈ្មោះ</td>
+          <td>អ៊ីម៉ែល</td>
+          <!-- <td>Qr</td> -->
+          <!-- <th class="text-center">សកម្មភាព</th> -->
         </tr>
         <tr v-for="(data, index) in currentPageItems" :key="index">
           <td>{{ index + 1 }}</td>
           <td>
             {{
-              data && data.createtedAt
-                ? new Date(data.createtedAt.seconds * 1000).toLocaleString()
+              data && data.createTedAt
+                ? new Date(data.createTedAt.seconds * 1000).toLocaleString()
                 : "N/A"
             }}
           </td>
           <td>{{ data.username }}</td>
           <td>{{ data.email }}</td>
-          <td v-if="data.image">test</td>
-          <td v-else>មិនមាន</td>
-          <td class="flex items-center justify-center gap-2">
+          <!-- <td v-if="data.image">test</td>
+          <td v-else>មិនមាន</td> -->
+          <!-- <td class="flex items-center justify-center gap-2">
             <button
               @click="handleAddEditData(data)"
               class="w-10 h-10 text-green-600 active:text-green-700 hover:text-green-900 text-headin3 duration-300 font-semibold underline"
             >
               កែប្រែ
             </button>
-          </td>
+          </td> -->
         </tr>
       </table>
       <div class="w-full">

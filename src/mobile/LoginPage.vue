@@ -31,13 +31,16 @@
     <router-link to="/register" class="underline text-center"
       ><p class="mt-4">មិនទាន់មានគនណី</p></router-link
     >
+    <router-link to="/forgot" class="underline text-center"
+      ><p class="mt-4">ភ្លេចពាកសម្ងាត់</p></router-link
+    >
   </div>
 </template>
 
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import useSignIn from "@/composible/SignIn";
+import useSignIn from "@/composible/SigneUp";
 export default {
   setup() {
     const router = useRouter();

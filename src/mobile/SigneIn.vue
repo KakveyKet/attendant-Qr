@@ -11,6 +11,7 @@
           v-model="username"
           type="text"
           class="w-[100%] h-[40px] rounded-lg"
+          placeholder="Username"
         />
       </div>
       <div>
@@ -19,6 +20,7 @@
           v-model="email"
           type="email"
           class="w-[100%] h-[40px] rounded-lg"
+          placeholder="Email"
         />
       </div>
       <div>
@@ -27,6 +29,7 @@
           v-model="password"
           type="password"
           class="w-[100%] h-[40px] rounded-lg"
+          placeholder="Password"
         />
       </div>
       <button

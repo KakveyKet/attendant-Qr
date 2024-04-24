@@ -1,7 +1,7 @@
 <template>
   <div class="w-full flex flex-col items-center justify-center h-screen">
     <form
-      class="w-[90%] h-[700px] bg-background rounded-md shadow-md"
+      class="w-[90%] h-auto bg-background rounded-md shadow-md p-5"
       @submit.prevent="handleSubmit"
     >
       <div
@@ -46,7 +46,7 @@ import useResetPassword from "@/composible/ForgetPassword";
 export default {
   setup() {
     const router = useRouter();
-    const { error, resetPassword, isPending } = useResetPassword();
+    const { resetPassword, isPending } = useResetPassword();
     const email = ref("");
     const errorMessage = ref("");
 

@@ -32,7 +32,7 @@
       ><p class="mt-4">មិនទាន់មានគនណី</p></router-link
     >
     <router-link to="/forgot" class="underline text-center"
-      ><p class="mt-4">ភ្លេចពាកសម្ងាត់</p></router-link
+      ><p class="mt-4">ភ្លេចពាក្យសម្ងាត់</p></router-link
     >
   </div>
 </template>
@@ -40,16 +40,16 @@
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import useSignIn from "@/composible/SigneUp";
+import useSignIn from "@/composible/SignIn";
 export default {
   setup() {
     const router = useRouter();
-    const { signin, error, isPending } = useSignIn();
+    const { signin, error, isPending } = useSignIn(); // Make sure signin is being properly imported
     const email = ref("");
     const password = ref("");
     const handleSignIn = async () => {
       await signin(email.value, password.value);
-      if (!error.value && isPending.value === false) {
+      if (!error.value && !isPending.value) {
         router.push({ name: "menuitem" });
       }
     };

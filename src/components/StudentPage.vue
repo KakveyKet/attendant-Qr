@@ -50,9 +50,9 @@
       <div class="w-full">
         <div class="w-full flex items-center justify-end mt-8 gap-4">
           <button
-            :class="{ 'bg-primery1/50': currentPage === 1 }"
+            :class="{ 'bg-primary1/50': currentPage === 1 }"
             v-if="currentPage > 1"
-            class="w-10 h-10 bg-primery1 rounded-md text-white flex items-center justify-center hover:bg-background hover:border-2 duration-200 hover:text-primery1 hover:border-primery1"
+            class="w-10 h-10 bg-primary1 rounded-md text-white flex items-center justify-center hover:bg-background hover:border-2 duration-200 hover:text-primery1 hover:border-primery1"
             @click="prevPage"
             :disabled="currentPage === 1"
           >
@@ -71,8 +71,8 @@
           </button>
           {{ currentPage }} of {{ totalPages }}
           <button
-            :class="{ 'bg-primery1/50': currentPage === totalPages }"
-            class="w-10 h-10 bg-primery1 rounded-md text-white flex items-center justify-center hover:bg-background hover:border-2 duration-200 hover:text-primery1 hover:border-primery1"
+            :class="{ 'bg-primary1/50': currentPage === totalPages }"
+            class="w-10 h-10 bg-primary1 rounded-md text-white flex items-center justify-center hover:bg-background hover:border-2 duration-200 hover:text-primery1 hover:border-primery1"
             @click="nextPage"
             :disabled="currentPage === totalPages"
           >

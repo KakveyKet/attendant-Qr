@@ -8,6 +8,7 @@ import 'material-icons/iconfont/material-icons.css';
 import vuesax3 from 'vuesax3'
 import 'vuesax3/dist/vuesax.css'
 import admin from './router/adminrouter';
+import './registerServiceWorker'
 const app = createApp(App)
 const notivue = createNotivue({
     position: 'top-center',

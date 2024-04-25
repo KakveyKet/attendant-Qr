@@ -4,6 +4,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap");
 @import "notivue/notifications.css";
 @import "notivue/animations.css";
+
 @layer base {
   .router_btn {
     @apply flex items-center gap-2 text-heading4 bg-primary1 rounded-full w-[200px] justify-center py-4 font-semibold hover:bg-primary1/85 duration-300 active:bg-primary2 text-white rounded-r-none shadow-md hover:shadow-lg;

@@ -21,7 +21,7 @@
     <vs-tabs class="w-full py-4">
       <vs-tab color="#627254" label="ម៉ោងចេញ">
         <div class="con-tab-ejemplo">
-          <div class="w-full h-[500px] overflow-auto mt-8 rounded-2xl">
+          <div class="w-full h-[500px] overflow-auto mt-8">
             <table>
               <tr>
                 <td>ល.រ</td>
@@ -32,12 +32,7 @@
               <tr v-for="(data, index) in currentPageItems" :key="index">
                 <td>{{ index + 1 }}</td>
                 <td>{{ data.name }}</td>
-                <td
-                  :class="{
-                    'bg-red-500 text-white': isEarly(data.createdAt),
-                    'bg-none text-black': !isEarly(data.createdAt),
-                  }"
-                >
+                <td>
                   <div class="flex items-center gap-4">
                     {{
                       data && data.createdAt

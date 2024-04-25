@@ -15,7 +15,7 @@
               >
                 0
               </span>
-              {{ attendants.length }}
+              {{ user.length }}
             </h2>
           </div>
           <div>
@@ -137,6 +137,40 @@
           </div>
         </div>
       </div>
+      <div class="w-[400px] h-[200px] bg-primary2 rounded-2xl shadow-md">
+        <div class="flex w-[90%] h-full items-center justify-between mx-auto">
+          <div class="">
+            <h1 class="text-heading2 font-semibold text-white">
+              អ្នកប្រើប្រាស់ Lab
+            </h1>
+            <h2 class="text-heading1 text-primary4 font-bold">
+              <span
+                v-if="lab.length < 10"
+                class="text-heading1 text-primary4 font-bold"
+              >
+                0
+              </span>
+              {{ lab.length }}
+            </h2>
+          </div>
+          <div class="">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-20 text-white"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -206,13 +240,29 @@ export default {
         console.error("Error fetching data:", error.message);
       }
     };
+    const lab = ref([]);
+    const getLab = async () => {
+      try {
+        await getCollectionQuery(
+          "labinbox",
+          [],
+          (data) => {
+            lab.value = data;
+          },
+          true
+        );
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
     onMounted(() => {
       getDataattendants();
       getPermmissions();
       getUser();
       getAttattendantout();
+      getLab();
     });
-    return { attendants, permissions, user, attendantout };
+    return { attendants, permissions, user, attendantout, lab };
   },
 };
 </script>

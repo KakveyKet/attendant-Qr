@@ -48,15 +48,7 @@
             </option>
           </select>
         </div>
-        <div class="space-y-2">
-          <label class="text-xl font-semibold text-primary1">ជំនាន់ *</label>
-          <br />
-          <input
-            class="w-[100%] h-[45px] rounded-lg"
-            type="text"
-            v-model="generation"
-          />
-        </div>
+
         <div class="space-y-2">
           <label class="text-xl font-semibold text-primary1">ជំនាញ *</label>
           <br />
@@ -65,6 +57,15 @@
             type="text"
             v-model="skill"
             placeholder="ជំនាញ"
+          />
+        </div>
+        <div class="space-y-2">
+          <label class="text-xl font-semibold text-primary1">ជំនាន់ *</label>
+          <br />
+          <input
+            class="w-[100%] h-[45px] rounded-lg"
+            type="text"
+            v-model="generation"
           />
         </div>
       </div>

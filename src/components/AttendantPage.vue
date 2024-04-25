@@ -32,12 +32,7 @@
               <tr v-for="(data, index) in currentPageItems" :key="index">
                 <td>{{ index + 1 }}</td>
                 <td>{{ data.name }}</td>
-                <td
-                  :class="{
-                    'bg-red-500 text-white': isLate(data && data.createdAt),
-                    'bg-none text-black': !isLate(data && data.createdAt),
-                  }"
-                >
+                <td>
                   <div>
                     {{
                       data && data.createdAt

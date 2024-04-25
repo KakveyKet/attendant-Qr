@@ -23,7 +23,7 @@ const adminrouters = [
             { path: 'scanout', name: 'scanout', component: FaceAttendentOut },
             { path: 'attendentout', name: 'attendentout', component: AttendentsOut },
             {
-                path: '/labpermission', name: 'labpermission', component: LabPermmission
+                path: 'labpermission', name: 'labpermission', component: LabPermmission
             }
         ]
     }

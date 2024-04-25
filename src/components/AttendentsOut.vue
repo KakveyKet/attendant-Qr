@@ -32,7 +32,19 @@
               <tr v-for="(data, index) in currentPageItems" :key="index">
                 <td>{{ index + 1 }}</td>
                 <td>{{ data.name }}</td>
-                <td>
+                <td
+                  :class="{
+                    'bg-red-500':
+                      data &&
+                      data.createdAt &&
+                      (new Date(data.createdAt.seconds * 1000).getHours() <
+                        16 ||
+                        (new Date(data.createdAt.seconds * 1000).getHours() ===
+                          16 &&
+                          new Date(data.createdAt.seconds * 1000).getMinutes() <
+                            30)),
+                  }"
+                >
                   <div class="flex items-center gap-4">
                     {{
                       data && data.createdAt

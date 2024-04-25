@@ -77,7 +77,6 @@ export default {
           "labinbox",
           [],
           (data) => {
-            // Filter data with status "Pending"
             dataitem.value = data.filter((item) => item.status === "Pending");
           },
           true

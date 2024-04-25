@@ -32,7 +32,17 @@
               <tr v-for="(data, index) in currentPageItems" :key="index">
                 <td>{{ index + 1 }}</td>
                 <td>{{ data.name }}</td>
-                <td>
+                <td
+                  :class="{
+                    'bg-red-500':
+                      data &&
+                      data.createdAt &&
+                      new Date(data.createdAt.seconds * 1000).getHours() >=
+                        14 &&
+                      new Date(data.createdAt.seconds * 1000).getMinutes() >=
+                        25,
+                  }"
+                >
                   <div>
                     {{
                       data && data.createdAt
@@ -43,6 +53,7 @@
                     }}
                   </div>
                 </td>
+
                 <td class="flex items-center justify-center gap-2">
                   <button
                     @click="handleDelete(data.id)"

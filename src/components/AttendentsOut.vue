@@ -37,12 +37,15 @@
                     'bg-red-500':
                       data &&
                       data.createdAt &&
+                      (!smallestCreatedAt ||
+                        new Date(data.createdAt.seconds * 1000) <
+                          smallestCreatedAt) &&
                       (new Date(data.createdAt.seconds * 1000).getHours() <
-                        16 ||
+                        15 ||
                         (new Date(data.createdAt.seconds * 1000).getHours() ===
-                          16 &&
+                          15 &&
                           new Date(data.createdAt.seconds * 1000).getMinutes() <
-                            30)),
+                            50)),
                   }"
                 >
                   <div class="flex items-center gap-4">
@@ -164,7 +167,7 @@ export default {
   },
   setup() {
     const dataitem = ref([]);
-    const { removeDoc } = useCollection("attendants");
+    const { removeDoc } = useCollection("attendantsOut");
     const currentComponent = ref("");
     const datatoedit = ref(null);
     const handleAddEditData = (item) => {

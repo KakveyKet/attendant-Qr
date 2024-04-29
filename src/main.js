@@ -9,8 +9,10 @@ import vuesax3 from 'vuesax3'
 import 'vuesax3/dist/vuesax.css'
 import admin from './router/adminrouter';
 import './registerServiceWorker'
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+
+import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
+
 const app = createApp(App)
 const notivue = createNotivue({
     position: 'top-center',
@@ -42,7 +44,12 @@ app.use(vuesax3, {
     }
 })
 app.use(routes)
-app.component('VueDatePicker', VueDatePicker);
 app.use(MotionPlugin)
 app.use(notivue)
 app.mount('#app')
+
+app.use(setupCalendar, {})
+
+// Use the components
+app.component('VCalendar', Calendar)
+app.component('VDatePicker', DatePicker)

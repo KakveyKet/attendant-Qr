@@ -24,7 +24,7 @@ const adminrouters = [
             { path: 'attendentout', name: 'attendentout', component: AttendentsOut },
             {
                 path: 'labpermission', name: 'labpermission', component: LabPermmission
-            }
+            },
         ]
     }
 ]
